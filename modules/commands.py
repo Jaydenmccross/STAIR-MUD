@@ -22,7 +22,7 @@ from modules.items import ItemManager
 from modules.rooms import RoomManager
 from modules.mobs import MobManager
 from modules.account_manager import AccountManager
-from .combat import handle_attack, CombatManager
+from .combat import CombatManager
 
 # Define DIRECTION_ALIASES globally
 DIRECTION_ALIASES = {
