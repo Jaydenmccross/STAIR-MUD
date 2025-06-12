@@ -336,7 +336,7 @@ class CombatManager:
                 death_handled_successfully = False
                 try:
                     death_handled_successfully = self.mob_manager.handle_mob_death(
-                        instance_id, room_vnum, room_manager, item_manager, character_name # Pass character_name
+                        instance_id, room_vnum, room_manager, item_manager, character_name
                     )
                     if death_handled_successfully:
                         logging.info(f"Successfully handled death for mob instance {instance_id}.")
@@ -445,9 +445,7 @@ class CombatManager:
         try:
             stats = character.get('stats', {})
             max_hp = stats.get('Max_HP', 1); max_sp = stats.get('Max_SP', 1); max_ap = stats.get('Max_AP', 1)
-            if max_hp == 0: max_hp = 1; # Avoid division by zero
-            if max_sp == 0: max_sp = 1;
-            if max_ap == 0: max_ap = 1
+            if max_hp == 0: max_hp = 1; if max_sp == 0: max_sp = 1; if max_ap == 0: max_ap = 1 # Corrected Syntax
             hp_p = (stats.get('HP',0)/max_hp)*100; sp_p = (stats.get('SP',0)/max_sp)*100; ap_p = (stats.get('AP',0)/max_ap)*100
             def gc(p): return "\033[32m" if p > 66 else ("\033[33m" if p > 33 else "\033[31m")
             R = "\033[0m"
