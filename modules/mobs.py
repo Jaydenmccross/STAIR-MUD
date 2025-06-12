@@ -1,4 +1,3 @@
-
 import logging
 from modules.data_handler import load_json, save_json
 import threading
@@ -17,706 +16,456 @@ class MobManager:
         self.active_mobs = {}  # instance_id -> mob_data
         self.mob_counts = {}  # {room_vnum: {mob_vnum: count}}
         self.spawn_manager = None
-        self.respawn_queue = Queue()  # Queue for mob respawns
-        self.mob_templates = {}  # Track mob templates per room
+        self.respawn_queue = Queue()
+        self.mob_templates = {}
         logging.debug(f"MobManager initialized with {len(self.mobs)} mob templates")
-        
-        # Add these debug lines
         logging.debug(f"MobManager methods: {dir(self)}")
         logging.debug(f"handle_mob_death exists: {'handle_mob_death' in dir(self)}")
-
-        # Load initial mob state
         self.load_initial_state()
 
     def load_initial_state(self):
-        """Load initial mob counts and templates from rooms."""
         try:
             rooms = self.room_manager.get_all_rooms()
             for room in rooms:
                 room_vnum = str(room.get('vnum'))
-                if not room_vnum:
-                    continue
-
-                # Initialize tracking dictionaries
-                if room_vnum not in self.mob_counts:
-                    self.mob_counts[room_vnum] = {}
-                if room_vnum not in self.mob_templates:
-                    self.mob_templates[room_vnum] = {}
-
-                # Process mobs in room
-                for mob in room.get('mobs', []):
-                    mob_vnum = str(mob.get('vnum'))
-                    if mob.get('is_template', False):
-                        # Store template
-                        self.mob_templates[room_vnum][mob_vnum] = mob
+                if not room_vnum: continue
+                self.mob_counts.setdefault(room_vnum, {})
+                self.mob_templates.setdefault(room_vnum, {})
+                for mob_in_room_data in room.get('mobs', []): # Renamed mob to mob_in_room_data
+                    mob_vnum = str(mob_in_room_data.get('vnum'))
+                    if mob_in_room_data.get('is_template', False):
+                        self.mob_templates[room_vnum][mob_vnum] = mob_in_room_data
                     else:
-                        # Count instance
-                        if mob_vnum not in self.mob_counts[room_vnum]:
-                            self.mob_counts[room_vnum][mob_vnum] = 0
-                        self.mob_counts[room_vnum][mob_vnum] += 1
-
+                        self.mob_counts[room_vnum][mob_vnum] = self.mob_counts[room_vnum].get(mob_vnum, 0) + 1
             logging.info("MobManager: Loaded initial mob state")
         except Exception as e:
-            logging.error(f"Error loading initial mob state: {e}")
+            logging.error(f"Error loading initial mob state: {e}", exc_info=True)
 
     def get_mob_by_vnum(self, vnum):
-        """Get mob template by VNUM."""
         try:
             vnum_str = str(vnum)
             with self.lock:
-                mob = next((mob for mob in self.mobs if str(mob["vnum"]) == vnum_str), None)
-            if mob:
-                logging.debug(f"Found mob: {mob['name']} with vnum: {vnum_str}")
-                return copy.deepcopy(mob)
-            else:
-                logging.error(f"Mob with vnum {vnum_str} not found.")
-                return None
+                mob_data = next((m for m in self.mobs if str(m["vnum"]) == vnum_str), None)
+            if mob_data:
+                return copy.deepcopy(mob_data)
+            logging.error(f"Mob with vnum {vnum_str} not found.")
+            return None
         except Exception as e:
-            logging.error(f"Error retrieving mob with vnum {vnum}: {e}")
+            logging.error(f"Error retrieving mob with vnum {vnum}: {e}", exc_info=True)
             return None
 
     def get_mob_by_alias(self, alias):
-        """Get mob by alias."""
-        alias = alias.lower()
+        alias_lower = alias.lower()
         try:
             with self.lock:
-                mob = next((mob for mob in self.mobs if mob.get("alias", "").lower() == alias), None)
-            if mob:
-                logging.debug(f"Found mob by alias: {mob['name']} with alias: {alias}")
-                return copy.deepcopy(mob)
-            else:
-                logging.error(f"Mob with alias '{alias}' not found.")
-                return None
+                mob_data = next((m for m in self.mobs if m.get("alias", "").lower() == alias_lower), None)
+            if mob_data:
+                return copy.deepcopy(mob_data)
+            logging.error(f"Mob with alias '{alias_lower}' not found.")
+            return None
         except Exception as e:
-            logging.error(f"Error retrieving mob with alias '{alias}': {e}")
+            logging.error(f"Error retrieving mob with alias '{alias_lower}': {e}", exc_info=True)
             return None
 
-    def spawn_mob_in_room(self, mob_vnum, room_vnum, room_manager):
-        """Spawn a mob instance in the specified room."""
+    def spawn_mob_in_room(self, mob_vnum, room_vnum, room_manager_param):
         with self.lock:
             try:
-                # Get the mob template
                 mob_template = self.get_mob_by_vnum(mob_vnum)
                 if not mob_template:
                     logging.error(f"No mob template found for vnum {mob_vnum}")
                     return False
-
-                # Create instance ID and mob instance
                 instance_id = f"{mob_vnum}_{int(time.time())}_{random.randint(1000, 9999)}"
                 mob_instance = copy.deepcopy(mob_template)
-                mob_instance['instance_id'] = instance_id
-                mob_instance['room'] = room_vnum
-                mob_instance['is_template'] = False
-
-                # Add this block right after creating mob_instance but before adding to room:
-                # Store in active_mobs
+                mob_instance.update({'instance_id': instance_id, 'room': room_vnum, 'is_template': False})
                 self.active_mobs[instance_id] = mob_instance
                 logging.debug(f"Added mob {mob_instance['name']} (ID: {instance_id}) to active_mobs")
-                logging.debug(f"Active mobs after spawn: {list(self.active_mobs.keys())}")  # Add this debug line
-
-                # Store template if not already stored
-                room_key = f"{room_vnum}_{mob_vnum}"
-                if room_key not in self.mob_templates:
-                    template_copy = copy.deepcopy(mob_template)
-                    template_copy['is_template'] = True
-                    self.mob_templates[room_key] = template_copy
-
-                # Add to room
-                room = room_manager.get_room(room_vnum)
-                if not room:
-                    logging.error(f"Room {room_vnum} not found")
+                room_obj = room_manager_param.get_room(room_vnum)
+                if not room_obj:
+                    logging.error(f"Room {room_vnum} not found for spawning mob.")
+                    del self.active_mobs[instance_id] # Clean up
                     return False
-
-                # Ensure room has mobs list
-                if 'mobs' not in room:
-                    room['mobs'] = []
-
-                # Add instance to room
-                room['mobs'].append({
-                    'vnum': mob_vnum,
-                    'instance_id': instance_id,
-                    'is_template': False
-                })
-
-                # Ensure template exists in room
-                self.ensure_template_in_room(room, mob_template)
-                
-                # Save room changes
-                room_manager.save_rooms()
-
+                room_obj.setdefault('mobs', []).append({'vnum': mob_vnum, 'instance_id': instance_id, 'is_template': False})
+                self.ensure_template_in_room(room_obj, mob_template)
+                room_manager_param.save_rooms()
                 logging.info(f"Successfully spawned mob {mob_vnum} (ID: {instance_id}) in room {room_vnum}")
                 return True
-
             except Exception as e:
-                logging.error(f"Error spawning mob: {e}")
+                logging.error(f"Error spawning mob {mob_vnum} in room {room_vnum}: {e}", exc_info=True)
                 return False
 
-    def ensure_template_in_room(self, room, mob_template):
-        """Ensure mob template exists in room configuration."""
-        template_exists = False
-        for mob in room.get('mobs', []):
-            if (mob.get('vnum') == mob_template['vnum'] and 
-                mob.get('is_template', False)):
-                template_exists = True
-                break
+    def ensure_template_in_room(self, room_obj, mob_template):
+        if not any(m.get('vnum') == mob_template['vnum'] and m.get('is_template', False) for m in room_obj.get('mobs', [])):
+            template_entry = {'vnum': mob_template['vnum'], 'is_template': True,
+                              'quantity': mob_template.get('quantity', 1),
+                              'max_instances': mob_template.get('max_instances', 1)}
+            room_obj.setdefault('mobs', []).append(template_entry)
+            logging.info(f"Added template for mob {mob_template['vnum']} to room {room_obj.get('vnum')}")
 
-        if not template_exists:
-            template_entry = {
-                'vnum': mob_template['vnum'],
-                'is_template': True,
-                'quantity': mob_template.get('quantity', 1),
-                'max_instances': mob_template.get('max_instances', 1)
-            }
-            room['mobs'].append(template_entry)
-            logging.info(f"Added template for mob {mob_template['vnum']} to room {room.get('vnum')}")
-
-    def remove_mob_from_room(self, instance_id, room_vnum, room_manager):
-        """Remove a specific mob instance while preserving template."""
+    def remove_mob_from_room(self, instance_id, room_vnum, room_manager_param):
         with self.lock:
             try:
-                room = room_manager.get_room(room_vnum)
-                if not room:
-                    return False
-
-                # Get the mob instance to find its vnum
-                mob_instance = self.active_mobs.get(instance_id)  # Changed from get_active_mob
-                if not mob_instance:
-                    return False
-
+                room_obj = room_manager_param.get_room(room_vnum)
+                if not room_obj: return False
+                mob_instance = self.active_mobs.get(instance_id)
+                if not mob_instance: return False
                 mob_vnum = mob_instance['vnum']
-
-                # Remove only the specific instance, not the template
-                room['mobs'] = [
-                    mob for mob in room.get('mobs', [])
-                    if (mob.get('instance_id') != instance_id and 
-                        (mob.get('is_template', False) or 
-                         mob.get('instance_id') != instance_id))
-                ]
-
-                # Ensure template remains
-                if mob_instance:
-                    self.ensure_template_in_room(room, self.get_mob_by_vnum(mob_vnum))
-
-                # Remove from active mobs tracking
-                if instance_id in self.active_mobs:
-                    del self.active_mobs[instance_id]
-                    logging.debug(f"Removed mob instance {instance_id} from active_mobs")
-
-                room_manager.save_rooms()
+                room_obj['mobs'] = [m for m in room_obj.get('mobs', []) if not (m.get('instance_id') == instance_id and not m.get('is_template'))]
+                base_template = self.get_mob_by_vnum(mob_vnum)
+                if base_template: self.ensure_template_in_room(room_obj, base_template)
+                if instance_id in self.active_mobs: del self.active_mobs[instance_id]
+                room_manager_param.save_rooms()
                 logging.info(f"Removed mob instance {instance_id} from room {room_vnum}")
                 return True
-
             except Exception as e:
-                logging.error(f"Error removing mob instance: {e}")
+                logging.error(f"Error removing mob instance {instance_id} from room {room_vnum}: {e}", exc_info=True)
                 return False
 
-    def handle_mob_death(self, instance_id, room_vnum, room_manager, item_manager):
-        """Handle mob death with proper instance cleanup."""
-        logging.debug(f"Attempting to handle death of mob {instance_id} in room {room_vnum}")  # Add this
+    def handle_mob_death(self, instance_id: str, room_vnum: str, room_manager_param: Any, item_manager_param: Any, killed_by_char_name: str):
+        logging.debug(f"Attempting to handle death of mob {instance_id} in room {room_vnum}, killed by {killed_by_char_name}")
         with self.lock:
             try:
-                # Get the mob instance
-                mob = self.active_mobs.get(instance_id)
-                if not mob:
-                    logging.error(f"No mob found for instance ID {instance_id}")
+                mob_instance = self.active_mobs.get(instance_id)
+                if not mob_instance:
+                    logging.error(f"No mob found for instance ID {instance_id} to handle death.")
+                    return False
+                room_obj = room_manager_param.get_room(room_vnum)
+                if not room_obj:
+                    logging.error(f"Room {room_vnum} not found for mob death {instance_id}.")
                     return False
 
-                room = room_manager.get_room(room_vnum)
-                if not room:
-                    logging.error(f"Room {room_vnum} not found")
-                    return False
-
-                # Create corpse
-                corpse_name = f"corpse of {mob['name']}"
+                corpse_name = f"corpse of {mob_instance['name']}"
                 corpse = {
-                    'vnum': 'corpse',
-                    'name': corpse_name,
-                    'type': 'corpses',
-                    'short_desc': f"The corpse of {mob['name']} lies here.",
-                    'long_desc': f"This is the corpse of {mob['name']}.",
-                    'decay_time': time.time() + 300,
-                    'contents': [],
-                    'killed_by': None
+                    'vnum': 'corpse', 'name': corpse_name, 'type': 'corpses',
+                    'short_desc': f"The corpse of {mob_instance['name']} lies here.",
+                    'long_desc': f"This is the corpse of {mob_instance['name']}.",
+                    'decay_time': time.time() + 300, 'contents': [],
+                    'killed_by': killed_by_char_name # Set killed_by
                 }
+                logging.debug(f"Generating loot for corpse of {mob_instance['name']} (ID: {instance_id}).")
+                self.generate_corpse_loot(mob_instance, corpse)
+                room_obj.setdefault('items', []).append(corpse)
 
-                # Generate loot
-                self.generate_corpse_loot(mob, corpse)
+                if instance_id in self.active_mobs: del self.active_mobs[instance_id]
+                mob_vnum_str = str(mob_instance['vnum'])
+                if room_vnum in self.mob_counts and mob_vnum_str in self.mob_counts[room_vnum]:
+                    self.mob_counts[room_vnum][mob_vnum_str] = max(0, self.mob_counts[room_vnum][mob_vnum_str] - 1)
+                room_obj['mobs'] = [m for m in room_obj.get('mobs', []) if m.get('instance_id') != instance_id]
 
-                # Add corpse to room
-                room.setdefault('items', []).append(corpse)
+                template = self.mob_templates.get(room_vnum, {}).get(mob_vnum_str)
+                if not template:
+                    base_mob_template = self.get_mob_by_vnum(mob_vnum_str)
+                    if base_mob_template: template = base_mob_template
+                    else: logging.error(f"No template found for mob {mob_vnum_str} to queue respawn.")
 
-                # Remove the mob instance from tracking
-                if instance_id in self.active_mobs:
-                    del self.active_mobs[instance_id]
-
-                # Update mob count for the room
-                mob_vnum = str(mob['vnum'])
-                if room_vnum in self.mob_counts and mob_vnum in self.mob_counts[room_vnum]:
-                    self.mob_counts[room_vnum][mob_vnum] = max(0, self.mob_counts[room_vnum][mob_vnum] - 1)
-
-                # Remove mob from room's mob list
-                room['mobs'] = [m for m in room['mobs'] if m.get('instance_id') != instance_id]
-
-                # Queue for respawn if needed
-                template = self.mob_templates.get(f"{room_vnum}_{mob_vnum}")
                 if template and template.get('respawn_time'):
                     respawn_data = {
-                        'mob_vnum': mob_vnum,
-                        'room_vnum': room_vnum,
-                        'template': template,
+                        'mob_vnum': mob_vnum_str, 'room_vnum': room_vnum, 'template': template,
                         'respawn_time': time.time() + template.get('respawn_time', 300)
                     }
-                    self.queue_respawn(respawn_data)
-
-                # Save room changes
-                room_manager.save_rooms()
-                
-                logging.info(f"Successfully handled death of mob {mob['name']} (ID: {instance_id}) in room {room_vnum}")
+                    if self.spawn_manager:
+                        self.spawn_manager.queue_respawn(respawn_data)
+                    else:
+                        logging.warning("Spawn manager not set in MobManager, falling back to local respawn queue.")
+                        self.queue_respawn(respawn_data)
+                room_manager_param.save_rooms()
+                logging.info(f"Successfully handled death of mob {mob_instance['name']} (ID: {instance_id}) in room {room_vnum}.")
                 return True
-
             except Exception as e:
-                logging.error(f"Error handling mob death: {e}")
+                logging.error(f"Error handling mob death for instance {instance_id}: {e}", exc_info=True)
                 return False
 
-    def add_mob(self, mob):
+    def generate_corpse_loot(self, mob_data, corpse_data):
+        try:
+            loot_pool = mob_data.get('loot_pool', [])
+            generated_items_count = 0
+            for loot_item_template in loot_pool: # Renamed loot_item to loot_item_template
+                if random.uniform(0, 100) <= loot_item_template.get('drop_rate', 0):
+                    corpse_data['contents'].append({
+                        'vnum': loot_item_template['vnum'],
+                        'type': loot_item_template['type'],
+                        'quantity': loot_item_template.get('quantity', 1)
+                    })
+                    generated_items_count += 1
+            gold_base = mob_data.get('gold', 0)
+            generated_gold_amount = 0
+            if gold_base > 0:
+                min_gold = max(1, int(gold_base * 0.5))
+                max_gold = int(gold_base * 1.5)
+                if max_gold < min_gold: max_gold = min_gold
+                generated_gold_amount = random.randint(min_gold, max_gold)
+                if generated_gold_amount > 0:
+                    corpse_data['contents'].append({'vnum': 'gold', 'type': 'currency', 'quantity': generated_gold_amount})
+            logging.debug(f"Loot generation complete for {mob_data['name']}: {generated_items_count} item types, {generated_gold_amount} gold.")
+        except Exception as e:
+            logging.error(f"Error generating corpse loot for {mob_data['name']}: {e}", exc_info=True)
+
+    # ... (rest of MobManager methods remain the same) ...
+    def add_mob(self, mob_data): # Renamed mob to mob_data
         """Add a new mob template."""
         try:
             with self.lock:
-                if any(str(existing_mob["vnum"]) == str(mob["vnum"]) for existing_mob in self.mobs):
-                    logging.error(f"Mob with vnum {mob['vnum']} already exists.")
+                if any(str(existing_mob["vnum"]) == str(mob_data["vnum"]) for existing_mob in self.mobs):
+                    logging.error(f"Mob with vnum {mob_data['vnum']} already exists.")
                     return False
-                self.mobs.append(mob)
-                logging.info(f"Added mob: {mob['name']}")
+                self.mobs.append(mob_data)
+                logging.info(f"Added mob: {mob_data['name']}")
                 self.save_mobs()
                 return True
         except Exception as e:
-            logging.error(f"Error adding mob '{mob['name']}': {e}")
+            logging.error(f"Error adding mob '{mob_data['name']}': {e}", exc_info=True)
             return False
 
-    def remove_mob(self, vnum):
+    def remove_mob(self, vnum_str): # Renamed vnum to vnum_str
         """Remove a mob template."""
         try:
-            vnum_str = str(vnum)
             with self.lock:
-                mob = next((mob for mob in self.mobs if str(mob["vnum"]) == vnum_str), None)
-                if mob:
-                    self.mobs.remove(mob)
-                    logging.info(f"Removed mob: {mob['name']} with vnum: {vnum_str}")
+                mob_to_remove = next((m for m in self.mobs if str(m["vnum"]) == vnum_str), None)
+                if mob_to_remove:
+                    self.mobs.remove(mob_to_remove)
+                    logging.info(f"Removed mob: {mob_to_remove['name']} with vnum: {vnum_str}")
                     self.save_mobs()
                     return True
                 logging.error(f"Mob with vnum {vnum_str} does not exist.")
                 return False
         except Exception as e:
-            logging.error(f"Error removing mob with vnum {vnum}: {e}")
+            logging.error(f"Error removing mob with vnum {vnum_str}: {e}", exc_info=True)
             return False
 
     def save_mobs(self):
-        """Save mob templates to file."""
         try:
             with self.lock:
                 save_json(self.mobs_file, self.mobs)
             logging.info("Mobs data saved.")
         except Exception as e:
-            logging.error(f"Error saving mobs: {e}")
+            logging.error(f"Error saving mobs: {e}", exc_info=True)
 
-    def get_active_mob(self, instance_id):
-        """Get a full mob instance by its ID."""
-        return self.active_mobs.get(instance_id)
+    def get_active_mob(self, instance_id_param):
+        return self.active_mobs.get(instance_id_param)
 
-    def update_mob_stats(self, instance_id, new_stats):
-        """Update a mob instance's current stats."""
+    def update_mob_stats(self, instance_id_param, new_stats_param):
         with self.lock:
-            if instance_id in self.active_mobs:
-                self.active_mobs[instance_id]['stats'].update(new_stats)
+            if instance_id_param in self.active_mobs:
+                self.active_mobs[instance_id_param]['stats'].update(new_stats_param)
                 return True
             return False
 
-    def move_mob(self, instance_id, from_room, to_room, room_manager):
-        """Move a mob from one room to another."""
+    def move_mob(self, instance_id_param, from_room_vnum, to_room_vnum, room_manager_param):
         with self.lock:
-            if instance_id not in self.active_mobs:
-                return False
-
-            mob = self.active_mobs[instance_id]
-
-            # Remove from current room
-            if not self.remove_mob_from_room(instance_id, from_room, room_manager):
-                return False
-
-            # Add to new room
-            mob['room'] = to_room
-            result = self.spawn_mob_in_room(mob['vnum'], to_room, room_manager)
-
+            if instance_id_param not in self.active_mobs: return False
+            mob_to_move = self.active_mobs[instance_id_param]
+            if not self.remove_mob_from_room(instance_id_param, from_room_vnum, room_manager_param): return False
+            mob_to_move['room'] = to_room_vnum
+            self.active_mobs[instance_id_param] = mob_to_move
+            result = self.spawn_mob_in_room(mob_to_move['vnum'], to_room_vnum, room_manager_param)
             if not result:
-                # Try to put back in original room if move failed
-                self.spawn_mob_in_room(mob['vnum'], from_room, room_manager)
+                mob_to_move['room'] = from_room_vnum
+                self.active_mobs[instance_id_param] = mob_to_move
+                self.spawn_mob_in_room(mob_to_move['vnum'], from_room_vnum, room_manager_param)
                 return False
-
             return True
 
-    def calculate_mob_attack(self, mob):
-        """Calculate mob's attack damage."""
-        ferocity = mob['stats'].get('Ferocity', 3)
-        attack_power = random.randint(ferocity, ferocity * 2)
-        return attack_power
-
-    def calculate_mob_defense(self, mob):
-        """Calculate mob's defense value."""
-        resilience = mob['stats'].get('Resilience', 3)
-        return resilience
-
-    def calculate_mob_evasion(self, mob):
-        """Calculate mob's evasion chance."""
-        evasiveness = mob['stats'].get('Evasiveness', 3)
-        return evasiveness
-
-    def should_mob_flee(self, mob):
-        """Determine if a mob should attempt to flee."""
-        if mob.get('is_aggressive', False):
-            return False
-
-        current_hp = mob['current_hp']
-        max_hp = mob['stats']['HP']
-        flee_threshold = mob.get('flee_threshold', 20)  # Flee at 20% HP by default
-
-        return (current_hp / max_hp * 100) <= flee_threshold
-
-    def generate_mob_identifier(self, mob_name, room):
-        """Generate a unique identifier for multiple instances of the same mob."""
-        existing_mobs = [mob for mob in room.get('mobs', []) 
-                        if mob_name in self.get_active_mob(mob.get('instance_id', '')).get('name', '')]
-        mob_count = len(existing_mobs) + 1
-        return f"{mob_name} ({mob_count})"
-
-    def respawn_mob_check(self, room_vnum, mob_vnum, room_manager):
-        """Check if a mob should be respawned."""
-        room = room_manager.get_room(room_vnum)
-        if not room:
-            return False
-
-        mob_template = self.get_mob_by_vnum(mob_vnum)
-        if not mob_template:
-            return False
-
-        # Count current instances of this mob type
-        current_count = sum(1 for mob in room.get('mobs', []) 
-                          if mob.get('vnum') == mob_vnum)
-
-        max_instances = mob_template.get('max_instances', 1)
-
-        if current_count < max_instances:
-            self.spawn_mob_in_room(mob_vnum, room_vnum, room_manager)
+    def calculate_mob_attack(self, mob_data): ferocity = mob_data['stats'].get('Ferocity', 3); return random.randint(ferocity, ferocity * 2)
+    def calculate_mob_defense(self, mob_data): return mob_data['stats'].get('Resilience', 3)
+    def calculate_mob_evasion(self, mob_data): return mob_data['stats'].get('Evasiveness', 3)
+    def should_mob_flee(self, mob_data):
+        if mob_data.get('is_aggressive', False): return False
+        current_hp = mob_data.get('stats',{}).get('HP',0)
+        max_hp = mob_data.get('stats',{}).get('Max_HP',1)
+        if max_hp == 0: return False
+        return (current_hp / max_hp * 100) <= mob_data.get('flee_threshold', 20)
+    def generate_mob_identifier(self, mob_name_param, room_obj):
+        count = sum(1 for m in room_obj.get('mobs',[]) if m.get('name') == mob_name_param) # Simplified
+        return f"{mob_name_param} ({count + 1})"
+    def respawn_mob_check(self, room_vnum_param, mob_vnum_param, room_manager_param):
+        room_obj = room_manager_param.get_room(room_vnum_param)
+        if not room_obj: return False
+        mob_template = self.get_mob_by_vnum(mob_vnum_param)
+        if not mob_template: return False
+        current_count = sum(1 for m in room_obj.get('mobs', []) if m.get('vnum') == mob_vnum_param and not m.get('is_template'))
+        if current_count < mob_template.get('max_instances', 1):
+            self.spawn_mob_in_room(mob_vnum_param, room_vnum_param, room_manager_param)
             return True
-
         return False
-
-    def create_instance(self, vnum, room_vnum):
-        """Create a new mob instance with proper tracking."""
+    def create_instance(self, vnum_param, room_vnum_param):
         with self.lock:
-            template = self.get_mob_by_vnum(vnum)
-            if not template:
-                return None
-
-            instance_id = f"{vnum}_{int(time.time())}_{random.randint(1000, 9999)}"
-            
-            # Create minimal instance data for room storage
-            room_instance = {
-                'vnum': vnum,
-                'instance_id': instance_id,
-                'is_template': False
-            }
-            
-            # Create full instance data for memory
+            template = self.get_mob_by_vnum(vnum_param)
+            if not template: return None
+            instance_id = f"{vnum_param}_{int(time.time())}_{random.randint(1000, 9999)}"
+            room_instance = {'vnum': vnum_param, 'instance_id': instance_id, 'is_template': False}
             full_instance = copy.deepcopy(template)
-            full_instance.update({
-                'instance_id': instance_id,
-                'room': room_vnum,  # Use 'room' for consistency
-                'is_template': False
-            })
-            
-            # Update tracking
+            full_instance.update({'instance_id': instance_id, 'room': room_vnum_param, 'is_template': False})
             self.active_mobs[instance_id] = full_instance
-            self.mob_counts.setdefault(room_vnum, {})
-            self.mob_counts[room_vnum][str(vnum)] = self.mob_counts[room_vnum].get(str(vnum), 0) + 1
-            
+            self.mob_counts.setdefault(room_vnum_param, {})
+            self.mob_counts[room_vnum_param][str(vnum_param)] = self.mob_counts[room_vnum_param].get(str(vnum_param), 0) + 1
             return room_instance
-
-    def remove_instance(self, instance_id):
-        """Remove a mob instance from tracking."""
+    def remove_instance(self, instance_id_param):
         with self.lock:
-            if instance_id in self.active_mobs:
-                mob = self.active_mobs[instance_id]
-                room_vnum = mob['room']  # Note: using 'room' instead of 'room_vnum'
-                mob_vnum = str(mob['vnum'])
-                
-                # Update counts
-                if room_vnum in self.mob_counts and mob_vnum in self.mob_counts[room_vnum]:
-                    self.mob_counts[room_vnum][mob_vnum] = max(0, self.mob_counts[room_vnum][mob_vnum] - 1)
-                
-                # Remove from active mobs
-                del self.active_mobs[instance_id]
+            if instance_id_param in self.active_mobs:
+                mob_to_remove = self.active_mobs[instance_id_param]
+                room_vnum = mob_to_remove['room']
+                mob_vnum_str = str(mob_to_remove['vnum'])
+                if room_vnum in self.mob_counts and mob_vnum_str in self.mob_counts[room_vnum]:
+                    self.mob_counts[room_vnum][mob_vnum_str] = max(0, self.mob_counts[room_vnum][mob_vnum_str] - 1)
+                del self.active_mobs[instance_id_param]
                 return True
             return False
-
-    def queue_respawn(self, mob_data: Dict):
-        """Queue a mob for respawn."""
+    def queue_respawn(self, mob_data_param: Dict):
         try:
-            # Get room and mob info
-            room_vnum = str(mob_data.get('room_vnum'))
-            mob_vnum = str(mob_data.get('vnum'))
-            
-            # Get the template from the room
-            room = self.room_manager.get_room(room_vnum)
-            if not room:
-                logging.error(f"Room {room_vnum} not found for respawn")
-                return False
-                
-            # Find template
-            template = next(
-                (mob for mob in room.get('mobs', [])
-                 if mob.get('is_template', False) and str(mob.get('vnum')) == mob_vnum),
-                None
-            )
-            
-            if not template:
-                logging.error(f"No template found for mob {mob_vnum} in room {room_vnum}")
-                return False
-                
-            # Calculate respawn time
-            respawn_time = time.time() + template.get('respawn_time', 300)  # Default 5 minutes
-            
-            # Add to respawn queue
-            respawn_data = {
-                'mob_vnum': mob_vnum,
-                'room_vnum': room_vnum,
-                'template': template,
-                'respawn_time': respawn_time
-            }
-            
-            self.respawn_queue.put(respawn_data)
-            logging.info(f"Queued mob {mob_vnum} for respawn at {time.ctime(respawn_time)}")
+            room_vnum = str(mob_data_param.get('room_vnum'))
+            mob_vnum = str(mob_data_param.get('vnum'))
+            room_obj = self.room_manager.get_room(room_vnum)
+            if not room_obj: logging.error(f"Room {room_vnum} not found for respawn"); return False
+            template = next((m for m in room_obj.get('mobs', []) if m.get('is_template') and str(m.get('vnum')) == mob_vnum), None)
+            if not template: template = self.get_mob_by_vnum(mob_vnum)
+            if not template: logging.error(f"No template for mob {mob_vnum} in room {room_vnum} or globally."); return False
+            respawn_delay = template.get('respawn_time', 300)
+            actual_respawn_time = time.time() + respawn_delay
+            respawn_data_to_queue = {'mob_vnum': mob_vnum, 'room_vnum': room_vnum, 'template': template, 'respawn_time': actual_respawn_time}
+            self.respawn_queue.put(respawn_data_to_queue)
+            logging.info(f"MobManager locally queued mob {mob_vnum} for respawn at {time.ctime(actual_respawn_time)}")
             return True
-                
         except Exception as e:
-            logging.error(f"Error queuing mob respawn: {e}")
+            logging.error(f"Error in MobManager queuing mob respawn: {e}", exc_info=True)
             return False
-
-    def _handle_respawn(self, respawn_data: Dict):
-        """Process a queued respawn with proper instance tracking."""
+    def _handle_respawn(self, respawn_data_param: Dict):
         try:
-            # Check if it's time to respawn
-            if time.time() < respawn_data['respawn_time']:
-                # Put it back in the queue if not ready
-                self.respawn_queue.put(respawn_data)
-                return
-
-            room_vnum = str(respawn_data['room_vnum'])
-            mob_vnum = str(respawn_data['mob_vnum'])
-            template = respawn_data['template']
-
+            if time.time() < respawn_data_param['respawn_time']: self.respawn_queue.put(respawn_data_param); return
+            room_vnum = str(respawn_data_param['room_vnum']); mob_vnum = str(respawn_data_param['mob_vnum']); template = respawn_data_param['template']
             with self.lock:
-                # Check instance limits
                 current_count = self._count_mob_instances(room_vnum, mob_vnum)
-                max_instances = int(template.get('max_instances', 1))
-
-                if current_count >= max_instances:
-                    logging.info(f"Skipped respawn of mob {mob_vnum} in room {room_vnum}: at max instances ({current_count}/{max_instances})")
-                    return
-
-                # Create new instance
-                if self._spawn_mob_instance(room_vnum, template):
-                    logging.info(f"Respawned mob {mob_vnum} in room {room_vnum}")
-                    # Update instance count
-                    if room_vnum not in self.mob_counts:
-                        self.mob_counts[room_vnum] = {}
-                    if mob_vnum not in self.mob_counts[room_vnum]:
-                        self.mob_counts[room_vnum][mob_vnum] = 0
-                    self.mob_counts[room_vnum][mob_vnum] += 1
-
-        except Exception as e:
-            logging.error(f"Error handling respawn: {e}")
-
-    def _count_mob_instances(self, room_vnum, mob_vnum):
-        """Count the number of instances of a mob in a room."""
-        return sum(1 for mob in self.active_mobs.get(room_vnum, []) if mob.get('vnum') == mob_vnum)
-
-    def _spawn_mob_instance(self, room_vnum, template):
-        """Spawn a new mob instance based on the template."""
+                if current_count >= int(template.get('max_instances', 1)): return
+                if self._spawn_mob_instance(room_vnum, template, self.room_manager):
+                    logging.info(f"MobManager (local queue): Respawned mob {mob_vnum} in room {room_vnum}")
+        except Exception as e: logging.error(f"Error in MobManager handling local respawn: {e}", exc_info=True)
+    def _count_mob_instances(self, room_vnum_param, mob_vnum_param):
+        room_obj = self.room_manager.get_room(room_vnum_param)
+        if not room_obj: return 0
+        return sum(1 for m in room_obj.get('mobs', []) if str(m.get('vnum')) == str(mob_vnum_param) and not m.get('is_template'))
+    def _spawn_mob_instance(self, room_vnum_param, template_param, room_manager_param):
         try:
-            mob_instance = copy.deepcopy(template)
-            mob_instance['is_template'] = False
-            mob_instance['instance_id'] = f"{template['vnum']}_{int(time.time())}_{random.randint(1000, 9999)}"
-            mob_instance['room'] = room_vnum
-
-            self.active_mobs[mob_instance['instance_id']] = mob_instance
-
-            room = self.room_manager.get_room(room_vnum)
-            if not room:
-                logging.error(f"Room {room_vnum} not found for spawning mob instance")
-                return False
-
-            room.setdefault('mobs', []).append({
-                'vnum': mob_instance['vnum'],
-                'instance_id': mob_instance['instance_id'],
-                'is_template': False
-            })
-
-            self.room_manager.save_rooms()
-            return True
-
-        except Exception as e:
-            logging.error(f"Error spawning mob instance: {e}")
-            return False
-
-    def generate_corpse_loot(self, mob, corpse):
-        """Generate loot for a mob corpse."""
-        try:
-            # Process loot pool
-            loot_pool = mob.get('loot_pool', [])
-            for loot in loot_pool:
-                if random.uniform(0, 100) <= loot.get('drop_rate', 0):
-                    corpse['contents'].append({
-                        'vnum': loot['vnum'],
-                        'type': loot['type'],
-                        'quantity': loot.get('quantity', 1)
-                    })
-
-            # Handle gold drops
-            gold_base = mob.get('gold', 0)
-            if gold_base > 0:
-                gold_amount = random.randint(gold_base, int(gold_base * 1.5))
-                corpse['contents'].append({
-                    'vnum': 'gold',
-                    'type': 'currency',
-                    'quantity': gold_amount
-                })
-
-            logging.debug(f"Generated loot for mob {mob['name']}")
-            
-        except Exception as e:
-            logging.error(f"Error generating corpse loot: {e}")
+            mob_vnum = str(template_param['vnum'])
+            instance_id = f"{mob_vnum}_{int(time.time())}_{random.randint(1000,9999)}"
+            mob_instance_data = copy.deepcopy(template_param); mob_instance_data.update({'instance_id':instance_id, 'is_template':False, 'room':room_vnum_param})
+            self.active_mobs[instance_id] = mob_instance_data
+            if room_manager_param.add_mob_to_room(room_vnum_param, {'vnum': mob_vnum, 'instance_id': instance_id, 'is_template': False}):
+                self.mob_counts.setdefault(room_vnum_param, {})
+                self.mob_counts[room_vnum_param][mob_vnum] = self.mob_counts[room_vnum_param].get(mob_vnum, 0) + 1
+                return True
+            del self.active_mobs[instance_id]; return False
+        except Exception as e: logging.error(f"Error in MobManager _spawn_mob_instance: {e}", exc_info=True); return False
 
 class MobSpawnManager:
-    def __init__(self, mob_manager, room_manager):
-        self.mob_manager = mob_manager
-        self.room_manager = room_manager
+    def __init__(self, mob_manager_param, room_manager_param):
+        self.mob_manager = mob_manager_param
+        self.room_manager = room_manager_param
         self.running = True
         self.respawn_queue = Queue()
         self.lock = threading.RLock()
         self.spawn_thread = None
+        self.active_processing_threads = set()
+        self.processing_lock = threading.Lock()
 
     def start(self):
-        """Start the spawn manager thread."""
+        if not self.running: self.running = True
         self.spawn_thread = threading.Thread(target=self._spawn_loop, daemon=True)
         self.spawn_thread.start()
         logging.info("Started mob spawn manager")
-        
+
     def _spawn_loop(self):
-        """Main loop for processing spawns and respawns."""
         while self.running:
             try:
-                # Process respawn queue
-                while not self.respawn_queue.empty():
+                if not self.respawn_queue.empty():
                     respawn_data = self.respawn_queue.get_nowait()
-                    self._handle_respawn(respawn_data)
-                
-                # Check and maintain spawn counts
+                    thread = threading.Thread(target=self._handle_respawn_thread_worker, args=(respawn_data,))
+                    with self.processing_lock: self.active_processing_threads.add(thread)
+                    thread.start()
                 self._maintain_spawn_counts()
-                
-                time.sleep(10)  # Check every 10 seconds
-                
+                with self.processing_lock:
+                    finished_threads = {t for t in self.active_processing_threads if not t.is_alive()}
+                    self.active_processing_threads.difference_update(finished_threads)
+                time.sleep(5)
             except Exception as e:
-                logging.error(f"Error in spawn loop: {e}")
-                time.sleep(10)  # Keep trying even if there's an error
+                logging.error(f"Error in spawn loop: {e}", exc_info=True)
+                time.sleep(10)
+
+    def _handle_respawn_thread_worker(self, respawn_data):
+        try: self._handle_respawn(respawn_data)
+        finally:
+            with self.processing_lock:
+                if threading.current_thread() in self.active_processing_threads:
+                    self.active_processing_threads.remove(threading.current_thread())
 
     def _maintain_spawn_counts(self):
-        """Ensure rooms maintain their desired mob quantities."""
         with self.lock:
             try:
-                rooms = self.room_manager.get_all_rooms()
-                for room in rooms:
-                    room_vnum = str(room.get('vnum'))
-                    
-                    # Check each mob template in the room
-                    for mob in room.get('mobs', []):
-                        if mob.get('is_template', False):  # Only process templates
-                            mob_vnum = str(mob.get('vnum'))
-                            desired_count = int(mob.get('quantity', 1))
-                            current_count = self.mob_manager.mob_counts.get(room_vnum, {}).get(mob_vnum, 0)
-                            
-                            # Spawn more if needed
-                            needed = max(0, desired_count - current_count)
-                            for _ in range(needed):
-                                self._spawn_mob_instance(room_vnum, mob)
-                                
-            except Exception as e:
-                logging.error(f"Error maintaining spawn counts: {e}")
+                all_rooms = self.room_manager.get_all_rooms()
+                for room_obj in all_rooms:
+                    room_vnum = str(room_obj.get('vnum'))
+                    for mob_template_in_room in room_obj.get('mobs', []):
+                        if mob_template_in_room.get('is_template', False):
+                            mob_vnum = str(mob_template_in_room.get('vnum'))
+                            desired_count = int(mob_template_in_room.get('quantity', 1))
+                            current_instances_in_room = sum(1 for m in room_obj.get('mobs',[]) if str(m.get('vnum')) == mob_vnum and not m.get('is_template'))
+                            needed = max(0, desired_count - current_instances_in_room)
+                            if needed > 0 :
+                                for _ in range(needed): self._spawn_mob_instance(room_vnum, mob_template_in_room)
+            except Exception as e: logging.error(f"Error maintaining spawn counts: {e}", exc_info=True)
 
-    def _spawn_mob_instance(self, room_vnum, template):
-        """Spawn a new mob instance in a room."""
+    def _spawn_mob_instance(self, room_vnum_param, template_param):
         try:
-            mob_vnum = str(template['vnum'])
-            current_count = self.mob_manager.mob_counts.get(room_vnum, {}).get(mob_vnum, 0)
-            max_instances = template.get('max_instances', 1)
-
-            if current_count >= max_instances:
-                return False
-
-            # Create instance through mob manager
-            room_instance = self.mob_manager.create_instance(mob_vnum, room_vnum)
-            if not room_instance:
-                return False
-
-            # Add to room
-            if self.room_manager.add_mob_to_room(room_vnum, room_instance):
-                logging.info(f"Spawned mob {mob_vnum} in room {room_vnum}")
+            mob_vnum = str(template_param['vnum'])
+            max_instances = int(template_param.get('max_instances', 1))
+            room_obj = self.room_manager.get_room(room_vnum_param)
+            if not room_obj: logging.error(f"Spawn: Room {room_vnum_param} not found."); return False
+            current_instances_in_room = sum(1 for m in room_obj.get('mobs',[]) if str(m.get('vnum'))==mob_vnum and not m.get('is_template'))
+            if current_instances_in_room >= max_instances: return False
+            room_mob_entry = self.mob_manager.create_instance(mob_vnum, room_vnum_param)
+            if not room_mob_entry: logging.error(f"Failed to create instance for {mob_vnum} in {room_vnum_param}."); return False
+            if self.room_manager.add_mob_to_room(room_vnum_param, room_mob_entry):
+                logging.info(f"MobSpawnManager: Spawned mob {mob_vnum} (ID: {room_mob_entry.get('instance_id')}) in room {room_vnum_param}")
                 return True
-            
-            # Cleanup if room add fails
-            self.mob_manager.remove_instance(room_instance['instance_id'])
-            return False
+            logging.error(f"Failed to add mob {mob_vnum} (ID: {room_mob_entry.get('instance_id')}) to room {room_vnum_param}.")
+            self.mob_manager.remove_instance(room_mob_entry.get('instance_id')); return False
+        except Exception as e: logging.error(f"Error in MobSpawnManager _spawn_mob_instance: {e}", exc_info=True); return False
 
-        except Exception as e:
-            logging.error(f"Error spawning mob instance: {e}")
-            return False
-
-    def queue_respawn(self, respawn_data):
-        """Queue a mob for respawn."""
+    def queue_respawn(self, respawn_data_param: Dict):
         try:
-            self.respawn_queue.put(respawn_data)
-            logging.info(
-                f"Queued mob {respawn_data['mob_vnum']} for respawn in room "
-                f"{respawn_data['room_vnum']} at {time.ctime(respawn_data['respawn_time'])}"
-            )
+            mob_vnum = respawn_data_param.get('mob_vnum'); room_vnum = respawn_data_param.get('room_vnum')
+            template_from_death = respawn_data_param.get('template', {})
+            room_obj = self.room_manager.get_room(room_vnum)
+            final_template_for_respawn = template_from_death
+            if room_obj:
+                room_specific_template = next((m for m in room_obj.get('mobs',[]) if m.get('is_template') and str(m.get('vnum')) == str(mob_vnum)), None)
+                if room_specific_template: final_template_for_respawn = room_specific_template
+            if 'respawn_time' not in final_template_for_respawn: final_template_for_respawn['respawn_time'] = 300
+            respawn_data_param['template'] = final_template_for_respawn
+            respawn_data_param['respawn_time'] = time.time() + final_template_for_respawn['respawn_time']
+            self.respawn_queue.put(respawn_data_param)
+            logging.info(f"MobSpawnManager: Queued mob {mob_vnum} for respawn in {room_vnum} at {time.ctime(respawn_data_param['respawn_time'])}")
             return True
-        except Exception as e:
-            logging.error(f"Error queuing mob respawn: {e}")
-            return False
+        except Exception as e: logging.error(f"Error in MobSpawnManager queuing respawn: {e}", exc_info=True); return False
 
-    def _handle_respawn(self, respawn_data):
-        """Process a queued respawn."""
+    def _handle_respawn(self, respawn_data_param: Dict):
         try:
-            # Check if it's time to respawn
-            if time.time() < respawn_data['respawn_time']:
-                # Put it back in the queue if not ready
-                self.respawn_queue.put(respawn_data)
-                return
-
-            room_vnum = str(respawn_data['room_vnum'])
-            template = respawn_data['template']
-            
+            if time.time() < respawn_data_param['respawn_time']: self.respawn_queue.put(respawn_data_param); return
+            room_vnum = str(respawn_data_param['room_vnum']); template_for_spawn = respawn_data_param['template']
+            mob_vnum_to_spawn = str(template_for_spawn.get('vnum'))
+            if not mob_vnum_to_spawn: logging.error(f"Respawn failed: no vnum in template. Data: {respawn_data_param}"); return
             with self.lock:
-                # Attempt to spawn the mob
-                if self._spawn_mob_instance(room_vnum, template):
-                    logging.info(f"Respawned mob {template['vnum']} in room {room_vnum}")
-
-        except Exception as e:
-            logging.error(f"Error handling respawn: {e}")
+                if self._spawn_mob_instance(room_vnum, template_for_spawn):
+                    logging.info(f"MobSpawnManager: Respawned mob {mob_vnum_to_spawn} in room {room_vnum}")
+        except Exception as e: logging.error(f"Error in MobSpawnManager handling respawn: {e}", exc_info=True)
 
     def stop(self):
-        """Stop the spawn manager cleanly."""
+        logging.info("Stopping mob spawn manager...")
         self.running = False
-        if self.spawn_thread:
-            self.spawn_thread.join(timeout=1.0)
-        logging.info("Stopped mob spawn manager")
-
+        if self.spawn_thread and self.spawn_thread.is_alive():
+            self.spawn_thread.join(timeout=15.0)
+            if self.spawn_thread.is_alive(): logging.warning("Spawn thread did not terminate cleanly after 15s.")
+        with self.processing_lock: active_threads_copy = list(self.active_processing_threads)
+        if active_threads_copy:
+            logging.info(f"Waiting for {len(active_threads_copy)} active respawn processing threads...")
+            for thread in active_threads_copy:
+                thread.join(timeout=5.0)
+                if thread.is_alive(): logging.warning(f"Respawn thread {thread.name} did not terminate cleanly.")
+        logging.info("Mob spawn manager stopped.")
