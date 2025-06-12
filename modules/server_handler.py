@@ -12,7 +12,8 @@ import json
 from modules.account_manager import AccountManager
 from modules.rooms import RoomManager
 from modules.items import ItemManager
-from modules.mobs import MobManager, MobSpawnManager # Import MobSpawnManager
+from modules.mobs import MobManager, MobSpawnManager
+from modules.skills import SkillManager # Added SkillManager import
 from modules.spells import SpellManager
 from modules.effects import EffectType, TargetType, EffectHandler
 from modules.commands import handle_command, handle_look
@@ -224,7 +225,6 @@ def regeneration_loop():
                     character = char_data.get('character')
                     if character and not character.get('in_combat', False):
                         regenerate_character_stats(character)
-                        # No need to call account_manager.update_character here if it's done in game loop or on logout
 
             current_time += TIME_INCREMENT
             if current_time >= 1440:
@@ -249,7 +249,7 @@ def remove_active_character(username: str) -> None:
             del active_characters[username]
             logging.debug(f"Removed character for username '{username}' from active characters")
 
-def add_player(player_dict: Dict, players_list: List, lock: threading.RLock) -> None: # Renamed players to players_list and players_lock to lock
+def add_player(player_dict: Dict, players_list: List, lock: threading.RLock) -> None:
     with lock:
         if not any(p['username'] == player_dict['username'] for p in players_list):
             players_list.append(player_dict)
@@ -258,7 +258,7 @@ def add_player(player_dict: Dict, players_list: List, lock: threading.RLock) -> 
         else:
             logging.warning(f"Player '{player_dict['username']}' is already connected.")
 
-def remove_player(username: str, players_list: List, lock: threading.RLock) -> None: # Renamed players to players_list and players_lock to lock
+def remove_player(username: str, players_list: List, lock: threading.RLock) -> None:
     with lock:
         initial_count = len(players_list)
         players_list[:] = [p for p in players_list if p['username'] != username]
@@ -301,7 +301,7 @@ def handle_login(client_socket: socket.socket, username: str) -> tuple[bool, Opt
                     client_socket,
                     room_manager,
                     item_manager,
-                    mob_manager, # This is the MobManager from mobs.py
+                    mob_manager,
                     account_manager
                 )
                 return True, username, chosen_char
@@ -311,7 +311,7 @@ def handle_login(client_socket: socket.socket, username: str) -> tuple[bool, Opt
         logging.error(f"Error during login process: {e}")
         return False, None, None
 
-def game_loop(client_socket: socket.socket, username: str, character: Dict, players_list: List, player_dict: Dict) -> None: # Renamed players to players_list
+def game_loop(client_socket: socket.socket, username: str, character: Dict, players_list: List, player_dict: Dict) -> None:
     try:
         while True:
             if not character.get('room'):
@@ -332,7 +332,7 @@ def game_loop(client_socket: socket.socket, username: str, character: Dict, play
                 client_socket=client_socket,
                 room_manager=room_manager,
                 item_manager=item_manager,
-                mob_manager=mob_manager, # This is the MobManager from mobs.py
+                mob_manager=mob_manager,
                 account_manager=account_manager,
                 skill_manager=skill_manager,
                 spell_manager=spell_manager,
@@ -354,7 +354,7 @@ def cleanup_player_session(username: str, character: Dict) -> None:
                 logging.debug(f"Removed player '{username}' from room {room_vnum}")
 
             account_manager.remove_connected_client(username)
-            remove_player(username, players, players_lock) # Uses global players and players_lock
+            remove_player(username, players, players_lock)
 
             account_manager.update_character(username, character)
             logging.info(f"Successfully cleaned up session for player '{username}'")
@@ -379,7 +379,7 @@ def handle_client(client_socket: socket.socket, addr: tuple) -> None:
 
             if account_choice.lower() == "new account":
                 client_socket.sendall(b'Enter your desired account name: ')
-                new_username = receive_input(client_socket) # Renamed username to new_username
+                new_username = receive_input(client_socket)
                 if not new_username:
                     break
                 new_username = new_username.lower()
@@ -396,14 +396,14 @@ def handle_client(client_socket: socket.socket, addr: tuple) -> None:
                 if success:
                     client_socket.sendall(b'Account created successfully! Please log in.\n')
                 else:
-                    client_socket.sendall(f'{message}\n'.encode()) # Send error message
-                continue # Always continue to allow retry or login
+                    client_socket.sendall(f'{message}\n'.encode())
+                continue
 
             if account_manager.username_exists(account_choice.lower()):
-                login_success, temp_username, temp_char = handle_login(client_socket, account_choice.lower()) # Renamed variables
+                login_success, temp_username, temp_char = handle_login(client_socket, account_choice.lower())
                 if login_success and temp_username and temp_char:
-                    username = temp_username # Assign to outer scope username
-                    chosen_char = temp_char   # Assign to outer scope chosen_char
+                    username = temp_username
+                    chosen_char = temp_char
                     player_dict = {
                         "name": chosen_char['name'],
                         "room": chosen_char['room'],
@@ -411,13 +411,13 @@ def handle_client(client_socket: socket.socket, addr: tuple) -> None:
                         "username": username,
                         "character": chosen_char,
                     }
-                    add_player(player_dict, players, players_lock) # Use global players and players_lock
+                    add_player(player_dict, players, players_lock)
                     account_manager.add_connected_client(username, client_socket)
                     room_manager.add_player_to_room(chosen_char['room'], username, chosen_char['name'])
 
-                    game_loop(client_socket, username, chosen_char, players, player_dict) # Use global players
+                    game_loop(client_socket, username, chosen_char, players, player_dict)
                     break
-            else: # Added else for non-existent account
+            else:
                 client_socket.sendall(b"Account does not exist.\n")
 
 
@@ -429,11 +429,11 @@ def handle_client(client_socket: socket.socket, addr: tuple) -> None:
         client_socket.close()
 
 class GameServer:
-    def __init__(self, host: str, port: int, mob_manager: MobManager, spawn_manager: MobSpawnManager): # Added spawn_manager
+    def __init__(self, host: str, port: int, mob_manager: MobManager, spawn_manager: MobSpawnManager):
         self.host = host
         self.port = port
         self.mob_manager = mob_manager
-        self.spawn_manager = spawn_manager # Store spawn_manager
+        self.spawn_manager = spawn_manager
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.running = False
         self.regeneration_thread = None
@@ -462,7 +462,7 @@ class GameServer:
                 active_characters.clear()
             room_manager.initialize_rooms()
             self.clean_mob_instances()
-            self.initialize_mobs() # This will now use the updated method
+            self.initialize_mobs()
             logging.info("Game state initialized successfully")
             return True
         except Exception as e:
@@ -472,22 +472,21 @@ class GameServer:
     def clean_mob_instances(self):
         try:
             with open(self.file_paths["Room"], 'r') as f:
-                rooms_data = json.load(f) # Renamed rooms to rooms_data
-            for room_data in rooms_data: # Renamed room to room_data
+                rooms_data = json.load(f)
+            for room_data in rooms_data:
                 room_data['mobs'] = [
                     mob for mob in room_data.get('mobs', [])
                     if mob.get('is_template', False)
                 ]
             with open(self.file_paths["Room"], 'w') as f:
-                json.dump(rooms_data, f, indent=4) # Renamed rooms to rooms_data
+                json.dump(rooms_data, f, indent=4)
             logging.info("Cleaned all mob instances from rooms")
         except Exception as e:
             logging.error(f"Error cleaning mob instances: {e}")
 
     def initialize_mobs(self):
         try:
-            logging.info("Mob initialization handled by MobSpawnManager.") # Updated log
-            # Ensure spawn_manager is started if it wasn't already in initialize_managers
+            logging.info("Mob initialization handled by MobSpawnManager.")
             if self.spawn_manager and not self.spawn_manager.running:
                  self.spawn_manager.start()
             return True
@@ -501,7 +500,6 @@ class GameServer:
 
         self.running = True
         self.start_regeneration()
-        # spawn_manager.start() is called in initialize_managers, no need to call here
 
         logging.info("Starting game server and accepting connections...")
         try:
@@ -531,7 +529,7 @@ class GameServer:
     def stop(self):
         try:
             self.running = False
-            if self.spawn_manager: # Check if spawn_manager exists
+            if self.spawn_manager:
                 self.spawn_manager.stop()
 
             with players_lock:
@@ -583,11 +581,9 @@ def main():
         logging.info("Starting STAIR MUD server...")
         Path('game_data').mkdir(exist_ok=True)
 
-        # initialize_managers() returns spawn_manager which is then passed to GameServer
-        # No need to call mob_manager global here as it's handled by initialize_managers
-        _, _, _, mob_mgr, _, _, _, sp_mgr = initialize_managers() # Unpack to get mob_manager and spawn_manager
+        _, _, _, mob_mgr, _, skill_mgr, _, sp_mgr = initialize_managers() # Ensure skill_manager is unpacked if needed locally, or remove if not
 
-        server = GameServer(HOST, PORT, mob_mgr, sp_mgr) # Pass mob_manager and spawn_manager
+        server = GameServer(HOST, PORT, mob_mgr, sp_mgr)
         server.start()
     except KeyboardInterrupt:
         logging.info("Server shutdown initiated by user.")
@@ -598,3 +594,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+[end of modules/server_handler.py]
