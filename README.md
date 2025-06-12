@@ -1,2 +1,0 @@
-# STAIR-MUD
-My Fun RPG MUD
