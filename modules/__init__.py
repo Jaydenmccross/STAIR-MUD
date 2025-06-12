@@ -32,7 +32,6 @@ from .commands import (
     cleanup_player,
     grant_skills_on_login
 )
-from .combat import handle_attack  # Import handle_attack from combat module
 from .data_handler import load_json, save_json
 from .items import ItemManager
 from .mobs import MobManager
