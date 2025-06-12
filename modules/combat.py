@@ -311,7 +311,7 @@ class CombatManager:
         try:
             logging.info(f"Combat victory for {character_name} against {mob_name} ({instance_id}) in room {room_vnum}.")
 
-            exp_gain = mob.get('exp', 0) # Get experience before potential errors below
+            exp_gain = mob.get('exp', 0)
 
             if not instance_id:
                 logging.error(f"Combat victory: No instance ID for {mob_name}. Cannot process mob death.")
@@ -320,26 +320,23 @@ class CombatManager:
                 logging.error(f"Combat victory: No room vnum for {mob_name} ({instance_id}). Character {character_name} is in {character.get('room')}. Cannot process mob death.")
                 if client_socket.fileno() != -1: client_socket.sendall(b"Error: Could not determine enemy location for cleanup.\n")
 
-            # Grant experience regardless of minor mob data issues if exp is defined
             if exp_gain > 0:
                 character['experience'] = character.get('experience', 0) + exp_gain
                 if client_socket.fileno() != -1: client_socket.sendall(
                     f"You have defeated {mob_name} and gained {exp_gain} experience!\n".encode()
                 )
                 self.check_for_level_up(character, client_socket, account_manager)
-            elif instance_id and room_vnum : # Only send basic defeat message if no exp and mob data is fine
+            elif instance_id and room_vnum :
                 if client_socket.fileno() != -1: client_socket.sendall(
                     f"You have defeated {mob_name}!\n".encode()
                 )
 
-            # Proceed with mob death handling only if instance_id and room_vnum are valid
             if instance_id and room_vnum:
                 logging.info(f"Attempting to call mob_manager.handle_mob_death for mob {instance_id} in room {room_vnum}, killed by {character_name}.")
                 death_handled_successfully = False
                 try:
-                    # Pass character_name to handle_mob_death
                     death_handled_successfully = self.mob_manager.handle_mob_death(
-                        instance_id, room_vnum, room_manager, item_manager, character_name
+                        instance_id, room_vnum, room_manager, item_manager, character_name # Pass character_name
                     )
                     if death_handled_successfully:
                         logging.info(f"Successfully handled death for mob instance {instance_id}.")
@@ -357,6 +354,7 @@ class CombatManager:
         finally:
             logging.debug(f"Calling end_combat for {character_name} from finally block in handle_combat_victory.")
             self.end_combat(combat_session)
+
 
     def end_combat(self, combat_session: Dict):
         with self.combat_lock:
@@ -423,7 +421,7 @@ class CombatManager:
             old_hp = target['stats']['HP']
             target['stats']['HP'] = max(0, old_hp - damage)
             actual_damage_taken = old_hp - target['stats']['HP']
-            damage_info_message = f" for {actual_damage_taken} damage" # Use actual_damage_taken
+            damage_info_message = f" for {actual_damage_taken} damage"
 
             full_message = ""
             if is_mob and attacker:
@@ -447,10 +445,12 @@ class CombatManager:
         try:
             stats = character.get('stats', {})
             max_hp = stats.get('Max_HP', 1); max_sp = stats.get('Max_SP', 1); max_ap = stats.get('Max_AP', 1)
-            if max_hp == 0: max_hp = 1; If max_sp == 0: max_sp = 1; if max_ap == 0: max_ap = 1
+            if max_hp == 0: max_hp = 1; # Avoid division by zero
+            if max_sp == 0: max_sp = 1;
+            if max_ap == 0: max_ap = 1
             hp_p = (stats.get('HP',0)/max_hp)*100; sp_p = (stats.get('SP',0)/max_sp)*100; ap_p = (stats.get('AP',0)/max_ap)*100
-            def gc(p): return "\033[32m" if p > 66 else ("\033[33m" if p > 33 else "\033[31m") # get_color
-            R = "\033[0m" # RESET
+            def gc(p): return "\033[32m" if p > 66 else ("\033[33m" if p > 33 else "\033[31m")
+            R = "\033[0m"
             return (f"{gc(hp_p)}HP: {stats.get('HP',0)}/{max_hp}{R} | {gc(sp_p)}SP: {stats.get('SP',0)}/{max_sp}{R} | {gc(ap_p)}AP: {stats.get('AP',0)}/{max_ap}{R}\n")
         except Exception as e: logging.error(f"Error formatting stats for {character.get('name','Unknown')}: {e}", exc_info=True); return "Stats Error\n"
 
@@ -524,7 +524,7 @@ class CombatManager:
         except Exception as e: logging.error(f"Error in calc_combat_modifiers: {e}", exc_info=True)
         return mods
 
-    def apply_combat_message(self, msg: str, cs: Any, crit: bool=False, dodge: bool=False): # Shorter params
+    def apply_combat_message(self, msg: str, cs: Any, crit: bool=False, dodge: bool=False):
         try:
             prefix = "CRITICAL! " if crit else ("DODGE! " if dodge else "")
             if cs and cs.fileno() != -1: cs.sendall(f"{prefix}{msg}\n".encode())
@@ -548,9 +548,9 @@ class CombatManager:
             bd = random.randint(md,Mxd); sb = attacker['stats'].get('Strength',0)//2
             mods = self.calculate_combat_modifiers(attacker,defender);
             if mods['is_dodge']: return 0
-            td_p = (bd+sb)*mods['damage_multiplier'] # total_damage_potential
-            dr = defender['stats'].get('Defense',0) + (defender['stats'].get('Tenacity',0)//2) # damage_reduction
-            fd = max(0, int(td_p - dr)) # final_damage
+            td_p = (bd+sb)*mods['damage_multiplier']
+            dr = defender['stats'].get('Defense',0) + (defender['stats'].get('Tenacity',0)//2)
+            fd = max(0, int(td_p - dr))
             logging.debug(f"DmgCalc {attacker.get('name')}: base={bd}, str_b={sb}, crit_m={mods['damage_multiplier']:.2f}, pot={td_p:.0f}, def_r={dr}, final={fd}")
             return fd
         except Exception as e: logging.error(f"Error in calc_damage: {e}", exc_info=True); return 0
@@ -570,9 +570,9 @@ class CombatManager:
 
     def check_for_level_up(self, character: Dict, client_socket: Any, account_manager: Any):
         try:
-            cl = character.get('level',1); cxp = character.get('experience',0); lup = False # current_level, current_exp, leveled_up
+            cl = character.get('level',1); cxp = character.get('experience',0); lup = False
             while True:
-                nxp = self.calculate_exp_needed(cl+1) # next_level_exp
+                nxp = self.calculate_exp_needed(cl+1)
                 if cxp >= nxp and cl < 100:
                     cl+=1; cxp -= nxp; character['level']=cl; character['experience']=cxp
                     self.apply_level_up_stats(character); lup = True
@@ -585,10 +585,10 @@ class CombatManager:
 
     def apply_level_up_stats(self, character: Dict):
         try:
-            s = character.get('stats',{}); bs = character.get('base_stats',{}) # stats, base_stats
+            s = character.get('stats',{}); bs = character.get('base_stats',{})
             s['Max_HP'] = s.get('Max_HP',0)+10; s['Max_SP'] = s.get('Max_SP',0)+5
             s['Strength'] = s.get('Strength',0)+1; s['Tenacity'] = s.get('Tenacity',0)+1; s['Agility'] = s.get('Agility',0)+1
-            s['HP'] = s['Max_HP']; s['SP'] = s['Max_SP'] # Full restore
+            s['HP'] = s['Max_HP']; s['SP'] = s['Max_SP']
             bs['Max_HP']=s['Max_HP']; bs['Max_SP']=s['Max_SP']; bs['Strength']=s['Strength']; bs['Tenacity']=s['Tenacity']; bs['Agility']=s['Agility']
             logging.debug(f"Applied level up stats for {character.get('name','Unknown')}")
         except Exception as e: logging.error(f"Error applying lvl_up_stats for {character.get('name','Unknown')}: {e}", exc_info=True)
@@ -598,23 +598,23 @@ class CombatManager:
             player = combat_session['attacker']; mob = combat_session['defender']
             logging.info(f"Player {player.get('name','Unknown')} defeated by {mob.get('name','Unknown')}.")
             if client_socket.fileno()!=-1: client_socket.sendall(f"You were slain by {mob.get('name','a creature')}!\n".encode())
-            player['room'] = "1"; player['stats']['HP'] = 1 # Respawn logic
+            player['room'] = "1"; player['stats']['HP'] = 1
             account_manager.update_character(player['username'], player)
             self.end_combat(combat_session)
             if client_socket.fileno()!=-1: client_socket.sendall(b"You are returned to the starting area.\n")
         except Exception as e:
             logging.error(f"Error in handle_player_death for {player.get('name','Unknown')}: {e}", exc_info=True)
-            self.end_combat(combat_session) # Ensure combat ends
+            self.end_combat(combat_session)
             if client_socket.fileno()!=-1: client_socket.sendall(b"Error processing defeat.\n")
 
-class CombatSkillHandler: # Simplified stubs for brevity
+class CombatSkillHandler:
     def __init__(self, combat_manager): self.combat_manager = combat_manager
-class CombatCommands:  # Simplified stubs
+class CombatCommands:
     def __init__(self, combat_manager): self.combat_manager = combat_manager
-class CombatInitializer: # Simplified stubs
+class CombatInitializer:
     @staticmethod
     def initialize_combat_stats(character): pass
-class CombatUtility: # Simplified stubs
+class CombatUtility:
     @staticmethod
     def calculate_dodge_chance(agility): return 0.0
     @staticmethod

@@ -5,7 +5,7 @@ import copy
 import random
 import time
 from queue import Queue
-from typing import Dict
+from typing import Dict, Any # Added Any
 
 class MobManager:
     def __init__(self, mobs_file, room_manager):
@@ -31,7 +31,7 @@ class MobManager:
                 if not room_vnum: continue
                 self.mob_counts.setdefault(room_vnum, {})
                 self.mob_templates.setdefault(room_vnum, {})
-                for mob_in_room_data in room.get('mobs', []): # Renamed mob to mob_in_room_data
+                for mob_in_room_data in room.get('mobs', []):
                     mob_vnum = str(mob_in_room_data.get('vnum'))
                     if mob_in_room_data.get('is_template', False):
                         self.mob_templates[room_vnum][mob_vnum] = mob_in_room_data
@@ -67,7 +67,7 @@ class MobManager:
             logging.error(f"Error retrieving mob with alias '{alias_lower}': {e}", exc_info=True)
             return None
 
-    def spawn_mob_in_room(self, mob_vnum, room_vnum, room_manager_param):
+    def spawn_mob_in_room(self, mob_vnum, room_vnum, room_manager_param: Any): # Added Any type hint
         with self.lock:
             try:
                 mob_template = self.get_mob_by_vnum(mob_vnum)
@@ -82,7 +82,7 @@ class MobManager:
                 room_obj = room_manager_param.get_room(room_vnum)
                 if not room_obj:
                     logging.error(f"Room {room_vnum} not found for spawning mob.")
-                    del self.active_mobs[instance_id] # Clean up
+                    del self.active_mobs[instance_id]
                     return False
                 room_obj.setdefault('mobs', []).append({'vnum': mob_vnum, 'instance_id': instance_id, 'is_template': False})
                 self.ensure_template_in_room(room_obj, mob_template)
@@ -101,7 +101,7 @@ class MobManager:
             room_obj.setdefault('mobs', []).append(template_entry)
             logging.info(f"Added template for mob {mob_template['vnum']} to room {room_obj.get('vnum')}")
 
-    def remove_mob_from_room(self, instance_id, room_vnum, room_manager_param):
+    def remove_mob_from_room(self, instance_id, room_vnum, room_manager_param: Any): # Added Any type hint
         with self.lock:
             try:
                 room_obj = room_manager_param.get_room(room_vnum)
@@ -139,7 +139,7 @@ class MobManager:
                     'short_desc': f"The corpse of {mob_instance['name']} lies here.",
                     'long_desc': f"This is the corpse of {mob_instance['name']}.",
                     'decay_time': time.time() + 300, 'contents': [],
-                    'killed_by': killed_by_char_name # Set killed_by
+                    'killed_by': killed_by_char_name
                 }
                 logging.debug(f"Generating loot for corpse of {mob_instance['name']} (ID: {instance_id}).")
                 self.generate_corpse_loot(mob_instance, corpse)
@@ -178,7 +178,7 @@ class MobManager:
         try:
             loot_pool = mob_data.get('loot_pool', [])
             generated_items_count = 0
-            for loot_item_template in loot_pool: # Renamed loot_item to loot_item_template
+            for loot_item_template in loot_pool:
                 if random.uniform(0, 100) <= loot_item_template.get('drop_rate', 0):
                     corpse_data['contents'].append({
                         'vnum': loot_item_template['vnum'],
@@ -199,9 +199,7 @@ class MobManager:
         except Exception as e:
             logging.error(f"Error generating corpse loot for {mob_data['name']}: {e}", exc_info=True)
 
-    # ... (rest of MobManager methods remain the same) ...
-    def add_mob(self, mob_data): # Renamed mob to mob_data
-        """Add a new mob template."""
+    def add_mob(self, mob_data):
         try:
             with self.lock:
                 if any(str(existing_mob["vnum"]) == str(mob_data["vnum"]) for existing_mob in self.mobs):
@@ -215,8 +213,7 @@ class MobManager:
             logging.error(f"Error adding mob '{mob_data['name']}': {e}", exc_info=True)
             return False
 
-    def remove_mob(self, vnum_str): # Renamed vnum to vnum_str
-        """Remove a mob template."""
+    def remove_mob(self, vnum_str):
         try:
             with self.lock:
                 mob_to_remove = next((m for m in self.mobs if str(m["vnum"]) == vnum_str), None)
@@ -249,7 +246,7 @@ class MobManager:
                 return True
             return False
 
-    def move_mob(self, instance_id_param, from_room_vnum, to_room_vnum, room_manager_param):
+    def move_mob(self, instance_id_param, from_room_vnum, to_room_vnum, room_manager_param: Any): # Added Any
         with self.lock:
             if instance_id_param not in self.active_mobs: return False
             mob_to_move = self.active_mobs[instance_id_param]
@@ -274,9 +271,9 @@ class MobManager:
         if max_hp == 0: return False
         return (current_hp / max_hp * 100) <= mob_data.get('flee_threshold', 20)
     def generate_mob_identifier(self, mob_name_param, room_obj):
-        count = sum(1 for m in room_obj.get('mobs',[]) if m.get('name') == mob_name_param) # Simplified
+        count = sum(1 for m in room_obj.get('mobs',[]) if m.get('name') == mob_name_param)
         return f"{mob_name_param} ({count + 1})"
-    def respawn_mob_check(self, room_vnum_param, mob_vnum_param, room_manager_param):
+    def respawn_mob_check(self, room_vnum_param, mob_vnum_param, room_manager_param: Any): # Added Any
         room_obj = room_manager_param.get_room(room_vnum_param)
         if not room_obj: return False
         mob_template = self.get_mob_by_vnum(mob_vnum_param)
@@ -341,7 +338,7 @@ class MobManager:
         room_obj = self.room_manager.get_room(room_vnum_param)
         if not room_obj: return 0
         return sum(1 for m in room_obj.get('mobs', []) if str(m.get('vnum')) == str(mob_vnum_param) and not m.get('is_template'))
-    def _spawn_mob_instance(self, room_vnum_param, template_param, room_manager_param):
+    def _spawn_mob_instance(self, room_vnum_param, template_param, room_manager_param: Any): # Added Any
         try:
             mob_vnum = str(template_param['vnum'])
             instance_id = f"{mob_vnum}_{int(time.time())}_{random.randint(1000,9999)}"
@@ -355,7 +352,7 @@ class MobManager:
         except Exception as e: logging.error(f"Error in MobManager _spawn_mob_instance: {e}", exc_info=True); return False
 
 class MobSpawnManager:
-    def __init__(self, mob_manager_param, room_manager_param):
+    def __init__(self, mob_manager_param: Any, room_manager_param: Any): # Added Any
         self.mob_manager = mob_manager_param
         self.room_manager = room_manager_param
         self.running = True
