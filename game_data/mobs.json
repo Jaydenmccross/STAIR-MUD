@@ -1,0 +1,105 @@
+[
+    {
+        "vnum": "1",
+        "name": "Brittle Skeleton",
+        "short_desc": "a shaky, wobbling skeleton",
+        "description": "This dilapidated skeleton wobbles unsteadily, its bones yellowed with age. Several small bones appear to be missing, making it difficult for the creature to maintain its balance. Despite its fragile appearance, there's still an undead malevolence in its empty eye sockets.",
+        "stats": {
+            "HP": 40,
+            "Max_HP": 40,
+            "AP": 0,
+            "Max_AP": 0,
+            "SP": 0,
+            "Max_SP": 0,
+            "Ferocity": 3,
+            "Resilience": 2,
+            "Evasiveness": 1
+        },
+        "movement": {
+            "type": "STATIONARY",
+            "speed": 30,
+            "patrol_route": []
+        },
+        "combat": {
+            "aggression": "NEUTRAL",
+            "chase_range": 0,
+            "flee_threshold": 20,
+            "call_for_help": false
+        },
+        "exp": 10,
+        "gold": 5,
+        "respawn_time": 60,
+        "loot_pool": [
+            {
+                "type": "armors",
+                "vnum": "1",
+                "quantity": 1,
+                "drop_rate": 99.0
+            }
+        ]
+    },
+    {
+        "vnum": "2",
+        "name": "Devious Batling",
+        "short_desc": "a devious batling flaps around",
+        "description": "This small furry bat flaps around the room in an obnoxious manner screeching and crashing into things randomly. Its tiny fangs glint in the light, and its beady red eyes dart about mischievously.",
+        "stats": {
+            "HP": 10,
+            "Max_HP": 10,
+            "AP": 0,
+            "Max_AP": 0,
+            "SP": 0,
+            "Max_SP": 0,
+            "Ferocity": 2,
+            "Resilience": 1,
+            "Evasiveness": 5
+        },
+        "movement": {
+            "type": "STATIONARY",
+            "speed": 30,
+            "patrol_route": []
+        },
+        "combat": {
+            "aggression": "NEUTRAL",
+            "chase_range": 2,
+            "flee_threshold": 40,
+            "call_for_help": false
+        },
+        "exp": 10,
+        "gold": 5,
+        "respawn_time": 120,
+        "loot_pool": []
+    },
+    {
+        "vnum": "777",
+        "name": "Level Up Mob",
+        "short_desc": "a little level up mob",
+        "description": "This is a mob you smack around to test leveling to 2. It appears weak and ready to grant you experience points.",
+        "stats": {
+            "HP": 10,
+            "Max_HP": 10,
+            "AP": 0,
+            "Max_AP": 0,
+            "SP": 0,
+            "Max_SP": 0,
+            "Ferocity": 1,
+            "Resilience": 1,
+            "Evasiveness": 1
+        },
+        "movement": {
+            "type": "STATIONARY",
+            "speed": 30,
+            "patrol_route": []
+        },
+        "combat": {
+            "aggression": "PASSIVE",
+            "chase_range": 0,
+            "flee_threshold": 0,
+            "call_for_help": false
+        },
+        "exp": 100,
+        "gold": 5,
+        "respawn_time": 60,
+        "loot_pool": []
+    }
+]

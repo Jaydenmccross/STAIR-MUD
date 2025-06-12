@@ -1,0 +1,12 @@
+[
+  {
+    "vnum": "corpse",
+    "name": "Corpse",
+    "type": "corpses",
+    "short_desc": "the corpse lies here",
+    "long_desc": "This is the corpse of a fallen creature.",
+    "decay_time": 300,
+    "is_container": true,
+    "contents": []
+  }
+]

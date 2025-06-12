@@ -1,0 +1,357 @@
+{
+    "Alistre": {
+        "name": "Alistre",
+        "class": "Wanderer",
+        "level": 7,
+        "account_level": 1000,
+        "stats": {
+            "Strength": 11,
+            "Tenacity": 11,
+            "Agility": 11,
+            "Intelligence": 5,
+            "Revel": 5,
+            "Defense": 0,
+            "Max_HP": 50,
+            "Max_SP": 32,
+            "Max_AP": 0,
+            "HP": 50,
+            "SP": 32,
+            "AP": 0
+        },
+        "equipment": {
+            "head": null,
+            "neck": null,
+            "chest": {
+                "vnum": "1",
+                "name": "Linen Shirt",
+                "type": "armors",
+                "slot": "Chest",
+                "short_desc": "a linen shirt",
+                "long_desc": "This worn linen shirt is nearly threadbare.",
+                "stats": {
+                    "Defense": 1
+                },
+                "is_light_source": false,
+                "value": 1,
+                "is_lore": true,
+                "is_no_rent": false
+            },
+            "waist": {
+                "vnum": "4",
+                "name": "Flowing Yellow Sash",
+                "type": "armors",
+                "slot": "Waist",
+                "short_desc": "a small yellow sash with black runes",
+                "long_desc": "This sash seems to give off an aura of alertness and agility.",
+                "stats": {
+                    "Agility": 2,
+                    "Defense": 1
+                },
+                "is_light_source": false,
+                "value": 100,
+                "quantity": 1
+            },
+            "legs": {
+                "vnum": "2",
+                "name": "Linen Breeches",
+                "type": "armors",
+                "slot": "Legs",
+                "short_desc": "a pair of linen breeches",
+                "long_desc": "This pair of breeches is ragged and almost see-through.",
+                "stats": {
+                    "Defense": 1
+                },
+                "is_light_source": false,
+                "value": 1
+            },
+            "feet": {
+                "vnum": "3",
+                "name": "Old Boots",
+                "type": "armors",
+                "slot": "Feet",
+                "short_desc": "a pair of old boots",
+                "long_desc": "This pair of boots are worn and coming apart at the heels.",
+                "stats": {
+                    "Defense": 1
+                },
+                "is_light_source": false,
+                "value": 1
+            },
+            "hands": null,
+            "ring1": null,
+            "ring2": null,
+            "mainhand": null,
+            "offhand": null,
+            "light_source": null
+        },
+        "inventory": [
+            {
+                "vnum": "1000",
+                "name": "Backpack",
+                "quantity": 1,
+                "type": "containers",
+                "short_desc": "a worn leather backpack",
+                "long_desc": "A worn leather backpack lies here, ready to hold your items.",
+                "flags": {},
+                "key_name": "",
+                "capacity": 10,
+                "contents": [
+                    {
+                        "vnum": "2",
+                        "name": "Fresh Bread",
+                        "quantity": 1,
+                        "type": "consumables",
+                        "short_desc": "a warm loaf of bread",
+                        "long_desc": "A freshly baked loaf of bread that still smells wonderful.",
+                        "flags": {},
+                        "key_name": "",
+                        "capacity": 0,
+                        "contents": []
+                    }
+                ]
+            },
+            {
+                "vnum": "key_2",
+                "name": "a armory key",
+                "quantity": 1,
+                "type": "keys",
+                "short_desc": "A armory key for Supply Chest",
+                "long_desc": "This is a armory key made specifically for Supply Chest.",
+                "flags": {},
+                "key_name": "armory key",
+                "capacity": 0,
+                "contents": []
+            },
+            {
+                "vnum": "1",
+                "name": "Wooden Practice Sword",
+                "type": "weapons",
+                "short_desc": "a splintered practice sword",
+                "long_desc": "This wooden sword has seen lots of use and has slain many a practice dummy.",
+                "min_damage": 2,
+                "max_damage": 5,
+                "stats": {},
+                "value": 5
+            },
+            {
+                "vnum": "1",
+                "name": "Wooden Practice Sword",
+                "type": "weapons",
+                "short_desc": "a splintered practice sword",
+                "long_desc": "This wooden sword has seen lots of use and has slain many a practice dummy.",
+                "min_damage": 2,
+                "max_damage": 5,
+                "stats": {},
+                "value": 5
+            }
+        ],
+        "in_combat": false,
+        "opponent": null,
+        "experience": 270,
+        "skills": [
+            {
+                "name": "Quick Slash",
+                "description": "A swift attack dealing additional damage.",
+                "level_required": 2,
+                "cooldown": 5,
+                "sp_cost": 10,
+                "target_type": "single",
+                "effects": [
+                    {
+                        "type": "damage",
+                        "value": 10
+                    }
+                ]
+            },
+            {
+                "name": "Blade Flurry",
+                "description": "A flurry of blades that hits all enemies.",
+                "level_required": 4,
+                "cooldown": 8,
+                "sp_cost": 15,
+                "target_type": "area",
+                "effects": [
+                    {
+                        "type": "area_damage",
+                        "value": 8
+                    }
+                ]
+            },
+            {
+                "name": "Battle Stance",
+                "description": "Increase your strength temporarily.",
+                "level_required": 6,
+                "cooldown": 20,
+                "sp_cost": 25,
+                "target_type": "self",
+                "effects": [
+                    {
+                        "type": "buff",
+                        "stat": "Strength",
+                        "value": 5,
+                        "duration": 30
+                    }
+                ]
+            }
+        ],
+        "cooldowns": {},
+        "active_effects": [],
+        "username": "codybrown81",
+        "room": "3",
+        "base_stats": {
+            "Strength": 6,
+            "Tenacity": 6,
+            "Agility": 6,
+            "Intelligence": 5,
+            "Revel": 5,
+            "Defense": 0,
+            "Max_HP": 50,
+            "Max_SP": 32,
+            "Max_AP": 0
+        },
+        "gold": 801,
+        "last_login": 1749706697.9342277,
+        "combat_stats": {
+            "total_kills": 1
+        },
+        "last_logout": 1749692589.7600837
+    },
+    "Codytest": {
+        "name": "Codytest",
+        "class": "Wanderer",
+        "level": 1,
+        "account_level": 1,
+        "stats": {
+            "HP": 20,
+            "Max_HP": 20,
+            "SP": 20,
+            "Max_SP": 20,
+            "AP": 0,
+            "Max_AP": 0,
+            "Strength": 5,
+            "Tenacity": 5,
+            "Agility": 5,
+            "Intelligence": 5,
+            "Revel": 5,
+            "Defense": 0
+        },
+        "equipment": {
+            "head": null,
+            "neck": null,
+            "chest": {
+                "vnum": "1",
+                "name": "Linen Shirt",
+                "type": "armors",
+                "slot": "Chest",
+                "short_desc": "a linen shirt",
+                "long_desc": "This worn linen shirt is nearly threadbare.",
+                "stats": {
+                    "Defense": 1
+                },
+                "is_light_source": false,
+                "value": 1
+            },
+            "waist": null,
+            "legs": null,
+            "feet": null,
+            "hands": null,
+            "ring1": null,
+            "ring2": null,
+            "mainhand": {
+                "vnum": "1",
+                "name": "Wooden Practice Sword",
+                "type": "weapons",
+                "short_desc": "a splintered practice sword",
+                "long_desc": "This wooden sword has seen lots of use and has slain many a practice dummy.",
+                "min_damage": 2,
+                "max_damage": 5,
+                "stats": {},
+                "value": 5
+            },
+            "offhand": null,
+            "light_source": null
+        },
+        "inventory": [],
+        "room": "1",
+        "in_combat": false,
+        "base_stats": {
+            "Strength": 5,
+            "Tenacity": 5,
+            "Agility": 5,
+            "Intelligence": 5,
+            "Revel": 5,
+            "Defense": 0,
+            "Max_HP": 20,
+            "Max_SP": 20,
+            "Max_AP": 0
+        },
+        "opponent": null,
+        "skills": [],
+        "cooldowns": {},
+        "active_effects": [],
+        "experience": 0,
+        "gold": 12,
+        "username": "codytest"
+    },
+    "Jenessa": {
+        "name": "Jenessa",
+        "username": "cody",
+        "created_at": 1749692337.5185814,
+        "last_login": 1749692337.5218248,
+        "last_logout": 1749692427.5489187,
+        "stats": {
+            "HP": 20,
+            "Max_HP": 20,
+            "SP": 20,
+            "Max_SP": 20,
+            "AP": 0,
+            "Max_AP": 0,
+            "Strength": 5,
+            "Tenacity": 5,
+            "Agility": 5,
+            "Intelligence": 5,
+            "Revel": 5,
+            "Defense": 0,
+            "Ferocity": 3,
+            "Resilience": 3,
+            "Evasion": 3
+        },
+        "experience": 0,
+        "level": 1,
+        "equipment": {
+            "head": null,
+            "neck": null,
+            "chest": null,
+            "waist": null,
+            "legs": null,
+            "feet": null,
+            "hands": null,
+            "ring1": null,
+            "ring2": null,
+            "mainhand": null,
+            "offhand": null,
+            "light_source": null
+        },
+        "inventory": [],
+        "room": "1",
+        "in_combat": false,
+        "class": "Wanderer",
+        "account_level": 1,
+        "base_stats": {
+            "Strength": 5,
+            "Tenacity": 5,
+            "Agility": 5,
+            "Intelligence": 5,
+            "Revel": 5,
+            "Defense": 0,
+            "Max_HP": 20,
+            "Max_SP": 20,
+            "Max_AP": 0
+        },
+        "opponent": null,
+        "skills": [],
+        "cooldowns": {},
+        "active_effects": [],
+        "gold": 0
+    }
+}

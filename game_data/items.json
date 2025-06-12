@@ -1,0 +1,41 @@
+[
+    {
+        "vnum": "1",
+        "name": "Marble Fountain",
+        "type": "items",
+        "short_desc": "a beautiful marble fountain",
+        "long_desc": "A grand marble fountain trickles in the center of the room. It puts your soul at ease and gives you a feeling of protection.",
+        "value": 0,
+        "immobile": true,
+        "readable": false,
+        "no_take": true,
+        "is_lore": false,
+        "is_no_rent": false
+    },
+    {
+        "vnum": "2",
+        "name": "Welcome Sign",
+        "type": "items",
+        "short_desc": "a wooden sign with ornate script",
+        "long_desc": "This wooden sign has interesting writing on it, you should read it.",
+        "value": 0,
+        "immobile": true,
+        "readable": true,
+        "no_take": true,
+        "is_lore": false,
+        "is_no_rent": false,
+        "read_text": "Welcome to STAIR Mud! If you have any bug reports, questions, or suggestions, please email hvnstears@hotmail.com."
+    },
+    {
+        "vnum": "3",
+        "name": "Getting Started Sign",
+        "type": "items",
+        "short_desc": "a wooden sign with ornate script",
+        "long_desc": "This sign has details about getting started in STAIR MUD. Perhaps you should read it.",
+        "value": 0,
+        "immobile": true,
+        "readable": true,
+        "no_take": false,
+        "read_text": "The sign reads, \"The Gods & Goddess of STAIR Mud would like to take a moment to help you acquiant yourself with some of the basic commands. Please head east to partake in the quick refresher.\""
+    }
+]

@@ -1,0 +1,49 @@
+[
+    {
+        "vnum": "1000",
+        "name": "Backpack",
+        "short_desc": "a worn leather backpack",
+        "long_desc": "A worn leather backpack lies here, ready to hold your items.",
+        "type": "containers",
+        "capacity": 10,
+        "items": []
+    },
+    {
+        "vnum": "2",
+        "name": "Supply Chest",
+        "type": "containers",
+        "container_type": "Chest",
+        "short_desc": "a sturdy wooden chest",
+        "long_desc": "This sturdy wooden chest contains items that help newcomers learn about equipment.",
+        "capacity": 10,
+        "key_name": "armory key",
+        "flags": {
+            "Closeable": true,
+            "Pickproof": false,
+            "Locked": true,
+            "Key_Required": true,
+            "Immobile": true,
+            "No_Steal": false
+        },
+        "value": 0
+    },
+    {
+        "vnum": "3",
+        "name": "Small Wooden Box",
+        "type": "containers",
+        "container_type": "Chest",
+        "short_desc": "a small ornately carved wooden box",
+        "long_desc": "This small boxes is beautifully carved and has an intricate lock on it.",
+        "capacity": 5,
+        "key_name": "ornate key",
+        "flags": {
+            "Closeable": true,
+            "Pickproof": false,
+            "Locked": true,
+            "Key_Required": true,
+            "Immobile": false,
+            "No_Steal": false
+        },
+        "value": 0
+    }
+]

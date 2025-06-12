@@ -1,0 +1,16 @@
+{
+    "fireball": {
+        "ap_cost": 10,
+        "effects": {
+            "HP": -20
+        },
+        "description": "A powerful fireball that damages the target."
+    },
+    "heal": {
+        "ap_cost": 5,
+        "effects": {
+            "HP": 15
+        },
+        "description": "A spell that restores health to the target."
+    }
+}

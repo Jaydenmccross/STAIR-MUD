@@ -1,0 +1,57 @@
+[
+    {
+        "vnum": "1",
+        "name": "Linen Shirt",
+        "type": "armors",
+        "slot": "Chest",
+        "short_desc": "a linen shirt",
+        "long_desc": "This worn linen shirt is nearly threadbare.",
+        "stats": {
+            "Defense": 1
+        },
+        "is_light_source": false,
+        "value": 1,
+        "is_lore": true,
+        "is_no_rent": false
+    },
+    {
+        "vnum": "2",
+        "name": "Linen Breeches",
+        "type": "armors",
+        "slot": "Legs",
+        "short_desc": "a pair of linen breeches",
+        "long_desc": "This pair of breeches is ragged and almost see-through.",
+        "stats": {
+            "Defense": 1
+        },
+        "is_light_source": false,
+        "value": 1
+    },
+    {
+        "vnum": "3",
+        "name": "Old Boots",
+        "type": "armors",
+        "slot": "Feet",
+        "short_desc": "a pair of old boots",
+        "long_desc": "This pair of boots are worn and coming apart at the heels.",
+        "stats": {
+            "Defense": 1
+        },
+        "is_light_source": false,
+        "value": 5
+    },
+    {
+        "vnum": "4",
+        "name": "Flowing Yellow Sash",
+        "type": "armors",
+        "slot": "Waist",
+        "short_desc": "a small yellow sash with black runes",
+        "long_desc": "This sash seems to give off an aura of alertness and agility.",
+        "stats": {
+            "Agility": 2,
+            "Defense": 1
+        },
+        "is_light_source": false,
+        "value": 100
+    }
+]

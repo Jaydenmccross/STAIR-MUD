@@ -1,0 +1,9 @@
+[
+    {
+        "vnum": "gold",
+        "name": "Gold Coins",
+        "short_desc": "gold coins",
+        "long_desc": "Shiny gold coins used as currency.",
+        "value": 1
+    }
+]

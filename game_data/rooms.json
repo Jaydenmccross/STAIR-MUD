@@ -1,0 +1,157 @@
+[
+    {
+        "vnum": "1",
+        "name": "Welcome Atrium",
+        "short_desc": "A welcoming atrium with plush seating.",
+        "description": "Welcome to the Grand Atrium, a serene and open space where the soft glow of floating lanterns illuminates polished stone floors. In the center, a grand marble fountain trickles quietly, its clear waters catching the light as they cascade gently into a shallow basin. Tall, ornate pillars reach toward the vaulted ceiling, their surfaces etched with ancient symbols, offering an air of calm and quiet reflection. Plush seating areas with cushioned chairs and long benches invite you to sit and rest, while delicate plants grow in large, earthen pots along the walls, adding a touch of greenery to the peaceful ambiance.",
+        "exits": {
+            "north": "2"
+        },
+        "mobs": [],
+        "items": [
+            {
+                "vnum": "1",
+                "name": "Marble Fountain",
+                "type": "items",
+                "short_desc": "a beautiful marble fountain",
+                "long_desc": "A grand marble fountain trickles in the center of the room. It puts your soul at ease and gives you a feeling of protection.",
+                "value": 0,
+                "immobile": true,
+                "readable": false,
+                "no_take": true,
+                "is_lore": false,
+                "is_no_rent": false
+            },
+            {
+                "vnum": "2",
+                "name": "Welcome Sign",
+                "type": "items",
+                "short_desc": "a wooden sign with ornate script",
+                "long_desc": "This wooden sign has interesting writing on it, you should read it.",
+                "value": 0,
+                "immobile": true,
+                "readable": true,
+                "no_take": true,
+                "is_lore": false,
+                "is_no_rent": false,
+                "read_text": "Welcome to STAIR Mud! If you have any bug reports, questions, or suggestions, please email hvnstears@hotmail.com."
+            }
+        ],
+        "players": [
+            {
+                "username": "cody",
+                "character_name": "Jenessa"
+            }
+        ]
+    },
+    {
+        "vnum": "2",
+        "name": "North Hallway",
+        "short_desc": "A narrow hallway leading deeper into the structure.",
+        "description": "The hallway here is long and narrow, stretching into the shadows ahead. Ornate sconces line the walls, casting flickering light across the polished stone floor. The air is cool and still, with the faint scent of incense lingering in the distance.",
+        "exits": {
+            "east": "3",
+            "south": "1"
+        },
+        "mobs": [],
+        "items": [],
+        "players": []
+    },
+    {
+        "vnum": "3",
+        "name": "Armory of Learning",
+        "short_desc": "A well-lit training armory for new adventurers.",
+        "description": "You find yourself in a well-lit armory filled with rows of gleaming weapons and sturdy armor pieces. The walls are adorned with shields and banners depicting heroic deeds. A friendly instructor stands nearby, ready to teach you how to don armor and wield weapons effectively. The scent of oiled leather and forged steel fills the air, creating an atmosphere of readiness. This is the perfect place to familiarize yourself with gear before venturing into the wider world.",
+        "exits": {
+            "west": "2"
+        },
+        "mobs": [
+            {
+                "vnum": "2",
+                "is_template": true,
+                "quantity": 2,
+                "max_instances": 2,
+                "respawn_time": 120
+            },
+            {
+                "vnum": "2",
+                "name": "Devious Batling",
+                "short_desc": "a devious batling flaps around",
+                "description": "This small furry bat flaps around the room in an obnoxious manner screeching and crashing into things randomly. Its tiny fangs glint in the light, and its beady red eyes dart about mischievously.",
+                "stats": {
+                    "HP": 10,
+                    "Max_HP": 10,
+                    "AP": 0,
+                    "Max_AP": 0,
+                    "SP": 0,
+                    "Max_SP": 0,
+                    "Ferocity": 2,
+                    "Resilience": 1,
+                    "Evasiveness": 5
+                },
+                "movement": {
+                    "type": "STATIONARY",
+                    "speed": 30,
+                    "patrol_route": []
+                },
+                "combat": {
+                    "aggression": "NEUTRAL",
+                    "chase_range": 2,
+                    "flee_threshold": 40,
+                    "call_for_help": false
+                },
+                "exp": 10,
+                "gold": 5,
+                "respawn_time": 120,
+                "loot_pool": [],
+                "instance_id": "2_1731810997_3290",
+                "is_template": false,
+                "is_aggressive": false,
+                "room_vnum": "3"
+            },
+            {
+                "vnum": "2",
+                "name": "Devious Batling",
+                "short_desc": "a devious batling flaps around",
+                "description": "This small furry bat flaps around the room in an obnoxious manner screeching and crashing into things randomly. Its tiny fangs glint in the light, and its beady red eyes dart about mischievously.",
+                "stats": {
+                    "HP": 10,
+                    "Max_HP": 10,
+                    "AP": 0,
+                    "Max_AP": 0,
+                    "SP": 0,
+                    "Max_SP": 0,
+                    "Ferocity": 2,
+                    "Resilience": 1,
+                    "Evasiveness": 5
+                },
+                "movement": {
+                    "type": "STATIONARY",
+                    "speed": 30,
+                    "patrol_route": []
+                },
+                "combat": {
+                    "aggression": "NEUTRAL",
+                    "chase_range": 2,
+                    "flee_threshold": 40,
+                    "call_for_help": false
+                },
+                "exp": 10,
+                "gold": 5,
+                "respawn_time": 120,
+                "loot_pool": [],
+                "instance_id": "2_1749692244_6024",
+                "is_template": false,
+                "is_aggressive": false,
+                "room_vnum": "3"
+            }
+        ],
+        "items": [],
+        "players": [
+            {
+                "username": "codybrown81",
+                "character_name": "Alistre"
+            }
+        ]
+    }
+]

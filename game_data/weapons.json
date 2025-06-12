@@ -1,0 +1,13 @@
+[
+    {
+        "vnum": "1",
+        "name": "Wooden Practice Sword",
+        "type": "weapons",
+        "short_desc": "a splintered practice sword",
+        "long_desc": "This wooden sword has seen lots of use and has slain many a practice dummy.",
+        "min_damage": 2,
+        "max_damage": 5,
+        "stats": {},
+        "value": 5
+    }
+]

@@ -1,0 +1,480 @@
+
+2024-11-16 17:42:08 DEBUG: Initializing game managers...
+2024-11-16 17:42:08 INFO: Rooms loaded successfully.
+2024-11-16 17:42:08 INFO: Marked mob 2 in room 3 as a template.
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/items.json.
+2024-11-16 17:42:08 DEBUG: Loaded 3 items from game_data/items.json
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/weapons.json.
+2024-11-16 17:42:08 DEBUG: Loaded 1 items from game_data/weapons.json
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/armor.json.
+2024-11-16 17:42:08 DEBUG: Loaded 4 items from game_data/armor.json
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/consumables.json.
+2024-11-16 17:42:08 DEBUG: Loaded 5 items from game_data/consumables.json
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/containers.json.
+2024-11-16 17:42:08 DEBUG: Loaded 3 items from game_data/containers.json
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/currencies.json.
+2024-11-16 17:42:08 DEBUG: Loaded 1 items from game_data/currencies.json
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/corpses.json.
+2024-11-16 17:42:08 DEBUG: Loaded 1 items from game_data/corpses.json
+2024-11-16 17:42:08 DEBUG: ItemManager initialized with: 3 items, 1 weapons, 4 armors, 5 consumables, 3 containers, 1 currencies, 1 corpses.
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/mobs.json.
+2024-11-16 17:42:08 DEBUG: MobManager initialized with mobs: ['Brittle Skeleton', 'Devious Batling', 'Level Up Mob']
+2024-11-16 17:42:08 INFO: Loaded initial mob state
+2024-11-16 17:42:08 DEBUG: SpawnManager connected to MobManager
+2024-11-16 17:42:08 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 17:42:08 INFO: Started mob spawn manager
+2024-11-16 17:42:08 INFO: All managers initialized successfully.
+2024-11-16 17:42:08 INFO: Rooms saved successfully.
+2024-11-16 17:42:08 INFO: Spawned mob 2 in room 3 with ID 2_1731807728_4201
+2024-11-16 17:42:08 DEBUG: Spawned mob 2 in room 3. Current count: 1
+2024-11-16 17:42:08 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 17:42:08 INFO: Rooms saved successfully.
+2024-11-16 17:42:08 INFO: Spawned mob 2 in room 3 with ID 2_1731807728_4626
+2024-11-16 17:42:08 DEBUG: Spawned mob 2 in room 3. Current count: 2
+2024-11-16 17:42:08 INFO: Rooms loaded successfully.
+2024-11-16 17:42:08 INFO: Marked mob 2 in room 3 as a template.
+2024-11-16 17:42:08 DEBUG: Loaded data from game_data/mobs.json.
+2024-11-16 17:42:08 DEBUG: MobManager initialized with 3 mob templates
+2024-11-16 17:42:08 DEBUG: MobManager methods: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_count_mob_instances', '_handle_respawn', '_spawn_mob_instance', 'active_mobs', 'add_mob', 'calculate_mob_attack', 'calculate_mob_defense', 'calculate_mob_evasion', 'create_instance', 'ensure_template_in_room', 'generate_corpse_loot', 'generate_mob_identifier', 'get_active_mob', 'get_mob_by_alias', 'get_mob_by_vnum', 'handle_mob_death', 'load_initial_state', 'lock', 'mob_counts', 'mob_templates', 'mobs', 'mobs_file', 'move_mob', 'queue_respawn', 'remove_instance', 'remove_mob', 'remove_mob_from_room', 'respawn_mob_check', 'respawn_queue', 'room_manager', 'save_mobs', 'should_mob_flee', 'spawn_manager', 'spawn_mob_in_room', 'update_mob_stats']
+2024-11-16 17:42:08 DEBUG: handle_mob_death exists: True
+2024-11-16 17:42:08 INFO: Server bound to 0.0.0.0:4000
+2024-11-16 17:42:08 DEBUG: No duplicate players found in any room.
+2024-11-16 17:42:08 DEBUG: Rooms initialization complete.
+2024-11-16 17:42:08 INFO: Cleaned all mob instances from rooms
+2024-11-16 17:42:08 INFO: Mob initialization handled by spawn manager
+2024-11-16 17:42:08 INFO: Game state initialized successfully
+2024-11-16 17:42:08 INFO: Started regeneration thread
+2024-11-16 17:42:08 INFO: Starting game server and accepting connections...
+2024-11-16 17:42:32 INFO: New connection from ('10.0.0.153', 52119)
+2024-11-16 17:42:32 DEBUG: Started client thread Thread-3 (handle_client) for ('10.0.0.153', 52119)
+2024-11-16 17:42:39 INFO: Data saved to game_data/characters.json.
+2024-11-16 17:42:39 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2024-11-16 17:42:39 INFO: Character 'Alistre' login processed successfully.
+2024-11-16 17:42:39 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 17:42:39 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 17:42:39 DEBUG: Added character 'Alistre' to active characters
+2024-11-16 17:42:39 DEBUG: Added player 'codybrown81' to players list.
+2024-11-16 17:42:39 INFO: Client for codybrown81 added to connected clients.
+2024-11-16 17:42:39 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 17:42:39 DEBUG: Player 'codybrown81' is already in room 3. Skipping add.
+2024-11-16 17:42:43 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 17:42:43 INFO: Combat initiated between Alistre and Devious Batling (2_1731807728_4201)
+2024-11-16 17:42:43 DEBUG: Damage calculation: base=2, strength_bonus=5, modifier=1.0, reduction=0, final=7
+2024-11-16 17:42:43 DEBUG: Player dealt 7 damage to Devious Batling. HP: 10->3 (Reduction: 0)
+2024-11-16 17:42:43 DEBUG: Mob dealt 1 damage to Alistre. HP: 50->49 (Reduction: 0)
+2024-11-16 17:42:45 DEBUG: Damage calculation: base=5, strength_bonus=5, modifier=1.0, reduction=0, final=10
+2024-11-16 17:42:45 DEBUG: Player dealt 10 damage to Devious Batling. HP: 3->0 (Reduction: 0)
+2024-11-16 17:42:45 ERROR: Error in handle_combat_victory: 'MobManager' object has no attribute 'handle_mob_death'
+2024-11-16 17:42:45 INFO: Combat ended for Alistre
+2024-11-16 17:42:48 DEBUG: Character 'Alistre' HP regenerated: 49 -> 50
+2024-11-16 17:42:48 INFO: Data saved to game_data/characters.json.
+2024-11-16 17:42:48 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2024-11-16 17:42:48 DEBUG: Updated stats for character 'Alistre'
+2024-11-16 18:17:33 DEBUG: Initializing game managers...
+2024-11-16 18:17:33 INFO: Rooms loaded successfully.
+2024-11-16 18:17:33 INFO: Marked mob 2 in room 3 as a template.
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/items.json.
+2024-11-16 18:17:33 DEBUG: Loaded 3 items from game_data/items.json
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/weapons.json.
+2024-11-16 18:17:33 DEBUG: Loaded 1 items from game_data/weapons.json
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/armor.json.
+2024-11-16 18:17:33 DEBUG: Loaded 4 items from game_data/armor.json
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/consumables.json.
+2024-11-16 18:17:33 DEBUG: Loaded 5 items from game_data/consumables.json
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/containers.json.
+2024-11-16 18:17:33 DEBUG: Loaded 3 items from game_data/containers.json
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/currencies.json.
+2024-11-16 18:17:33 DEBUG: Loaded 1 items from game_data/currencies.json
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/corpses.json.
+2024-11-16 18:17:33 DEBUG: Loaded 1 items from game_data/corpses.json
+2024-11-16 18:17:33 DEBUG: ItemManager initialized with: 3 items, 1 weapons, 4 armors, 5 consumables, 3 containers, 1 currencies, 1 corpses.
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/mobs.json.
+2024-11-16 18:17:33 DEBUG: MobManager initialized with mobs: ['Brittle Skeleton', 'Devious Batling', 'Level Up Mob']
+2024-11-16 18:17:33 DEBUG: Created CombatManager with mob_manager of type: <class 'modules.server_handler.MobManager'>
+2024-11-16 18:17:33 DEBUG: mob_manager methods at creation: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'get_mob_by_vnum', 'lock', 'mobs', 'mobs_file', 'room_manager', 'set_spawn_manager', 'spawn_manager', 'spawn_mob_in_room']
+2024-11-16 18:17:33 INFO: Loaded initial mob state
+2024-11-16 18:17:33 DEBUG: SpawnManager connected to MobManager
+2024-11-16 18:17:33 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:17:33 INFO: Started mob spawn manager
+2024-11-16 18:17:33 INFO: All managers initialized successfully.
+2024-11-16 18:17:33 INFO: Rooms saved successfully.
+2024-11-16 18:17:33 INFO: Spawned mob 2 in room 3 with ID 2_1731809853_2953
+2024-11-16 18:17:33 DEBUG: Spawned mob 2 in room 3. Current count: 1
+2024-11-16 18:17:33 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:17:33 INFO: Rooms saved successfully.
+2024-11-16 18:17:33 INFO: Spawned mob 2 in room 3 with ID 2_1731809853_2006
+2024-11-16 18:17:33 DEBUG: Spawned mob 2 in room 3. Current count: 2
+2024-11-16 18:17:33 INFO: Rooms loaded successfully.
+2024-11-16 18:17:33 INFO: Marked mob 2 in room 3 as a template.
+2024-11-16 18:17:33 DEBUG: Loaded data from game_data/mobs.json.
+2024-11-16 18:17:33 DEBUG: MobManager initialized with 3 mob templates
+2024-11-16 18:17:33 DEBUG: MobManager methods: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_count_mob_instances', '_handle_respawn', '_spawn_mob_instance', 'active_mobs', 'add_mob', 'calculate_mob_attack', 'calculate_mob_defense', 'calculate_mob_evasion', 'create_instance', 'ensure_template_in_room', 'generate_corpse_loot', 'generate_mob_identifier', 'get_active_mob', 'get_mob_by_alias', 'get_mob_by_vnum', 'handle_mob_death', 'load_initial_state', 'lock', 'mob_counts', 'mob_templates', 'mobs', 'mobs_file', 'move_mob', 'queue_respawn', 'remove_instance', 'remove_mob', 'remove_mob_from_room', 'respawn_mob_check', 'respawn_queue', 'room_manager', 'save_mobs', 'should_mob_flee', 'spawn_manager', 'spawn_mob_in_room', 'update_mob_stats']
+2024-11-16 18:17:33 DEBUG: handle_mob_death exists: True
+2024-11-16 18:17:33 INFO: Server bound to 0.0.0.0:4000
+2024-11-16 18:17:33 DEBUG: No duplicate players found in any room.
+2024-11-16 18:17:33 DEBUG: Rooms initialization complete.
+2024-11-16 18:17:33 INFO: Cleaned all mob instances from rooms
+2024-11-16 18:17:33 INFO: Mob initialization handled by spawn manager
+2024-11-16 18:17:33 INFO: Game state initialized successfully
+2024-11-16 18:17:33 INFO: Started regeneration thread
+2024-11-16 18:17:33 INFO: Starting game server and accepting connections...
+2024-11-16 18:17:38 INFO: New connection from ('10.0.0.153', 54411)
+2024-11-16 18:17:38 DEBUG: Started client thread Thread-3 (handle_client) for ('10.0.0.153', 54411)
+2024-11-16 18:17:48 INFO: Data saved to game_data/characters.json.
+2024-11-16 18:17:48 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2024-11-16 18:17:48 INFO: Character 'Alistre' login processed successfully.
+2024-11-16 18:17:48 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:17:48 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:17:48 DEBUG: Added character 'Alistre' to active characters
+2024-11-16 18:17:48 DEBUG: Added player 'codybrown81' to players list.
+2024-11-16 18:17:48 INFO: Client for codybrown81 added to connected clients.
+2024-11-16 18:17:48 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:17:48 DEBUG: Player 'codybrown81' is already in room 3. Skipping add.
+2024-11-16 18:17:51 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:17:51 INFO: Combat initiated between Alistre and Devious Batling (2_1731809853_2953)
+2024-11-16 18:17:51 DEBUG: Damage calculation: base=2, strength_bonus=5, modifier=1.0, reduction=0, final=7
+2024-11-16 18:17:51 DEBUG: Player dealt 7 damage to Devious Batling. HP: 10->3 (Reduction: 0)
+2024-11-16 18:17:51 DEBUG: Mob dealt 1 damage to Alistre. HP: 50->49 (Reduction: 0)
+2024-11-16 18:17:53 DEBUG: Damage calculation: base=3, strength_bonus=5, modifier=1.0, reduction=0, final=8
+2024-11-16 18:17:53 DEBUG: Player dealt 8 damage to Devious Batling. HP: 3->0 (Reduction: 0)
+2024-11-16 18:17:53 DEBUG: Combat victory - mob_manager type: <class 'modules.server_handler.MobManager'>
+2024-11-16 18:17:53 DEBUG: Combat victory - mob_manager methods: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'get_mob_by_vnum', 'lock', 'mobs', 'mobs_file', 'room_manager', 'set_spawn_manager', 'spawn_manager', 'spawn_mob_in_room']
+2024-11-16 18:17:53 DEBUG: Combat victory - instance_id: 2_1731809853_2953
+2024-11-16 18:17:53 DEBUG: Combat victory - room_vnum: 3
+2024-11-16 18:17:53 ERROR: Error in handle_combat_victory: 'MobManager' object has no attribute 'handle_mob_death'
+2024-11-16 18:17:53 INFO: Combat ended for Alistre
+2024-11-16 18:18:03 DEBUG: Character 'Alistre' HP regenerated: 49 -> 50
+2024-11-16 18:18:03 INFO: Data saved to game_data/characters.json.
+2024-11-16 18:18:03 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2024-11-16 18:18:03 DEBUG: Updated stats for character 'Alistre'
+2024-11-16 18:25:01 DEBUG: Initializing game managers...
+2024-11-16 18:25:01 INFO: Rooms loaded successfully.
+2024-11-16 18:25:01 INFO: Marked mob 2 in room 3 as a template.
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/items.json.
+2024-11-16 18:25:01 DEBUG: Loaded 3 items from game_data/items.json
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/weapons.json.
+2024-11-16 18:25:01 DEBUG: Loaded 1 items from game_data/weapons.json
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/armor.json.
+2024-11-16 18:25:01 DEBUG: Loaded 4 items from game_data/armor.json
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/consumables.json.
+2024-11-16 18:25:01 DEBUG: Loaded 5 items from game_data/consumables.json
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/containers.json.
+2024-11-16 18:25:01 DEBUG: Loaded 3 items from game_data/containers.json
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/currencies.json.
+2024-11-16 18:25:01 DEBUG: Loaded 1 items from game_data/currencies.json
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/corpses.json.
+2024-11-16 18:25:01 DEBUG: Loaded 1 items from game_data/corpses.json
+2024-11-16 18:25:01 DEBUG: ItemManager initialized with: 3 items, 1 weapons, 4 armors, 5 consumables, 3 containers, 1 currencies, 1 corpses.
+2024-11-16 18:25:01 DEBUG: Loaded data from game_data/mobs.json.
+2024-11-16 18:25:01 DEBUG: MobManager initialized with mobs: ['Brittle Skeleton', 'Devious Batling', 'Level Up Mob']
+2024-11-16 18:25:01 DEBUG: Created CombatManager with mob_manager of type: <class 'modules.server_handler.MobManager'>
+2024-11-16 18:25:01 DEBUG: mob_manager methods at creation: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'get_mob_by_vnum', 'lock', 'mobs', 'mobs_file', 'room_manager', 'set_spawn_manager', 'spawn_manager', 'spawn_mob_in_room']
+2024-11-16 18:25:01 INFO: Loaded initial mob state
+2024-11-16 18:25:01 DEBUG: SpawnManager connected to MobManager
+2024-11-16 18:25:01 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:25:01 INFO: Started mob spawn manager
+2024-11-16 18:25:01 INFO: All managers initialized successfully.
+2024-11-16 18:25:01 INFO: Rooms saved successfully.
+2024-11-16 18:25:01 INFO: Spawned mob 2 in room 3 with ID 2_1731810301_5072
+2024-11-16 18:25:01 DEBUG: Spawned mob 2 in room 3. Current count: 1
+2024-11-16 18:25:01 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:25:01 INFO: Rooms saved successfully.
+2024-11-16 18:25:01 INFO: Spawned mob 2 in room 3 with ID 2_1731810301_4269
+2024-11-16 18:25:01 DEBUG: Spawned mob 2 in room 3. Current count: 2
+2024-11-16 18:25:01 INFO: Server bound to 0.0.0.0:4000
+2024-11-16 18:25:01 DEBUG: No duplicate players found in any room.
+2024-11-16 18:25:01 DEBUG: Rooms initialization complete.
+2024-11-16 18:25:01 INFO: Cleaned all mob instances from rooms
+2024-11-16 18:25:01 INFO: Mob initialization handled by spawn manager
+2024-11-16 18:25:01 INFO: Game state initialized successfully
+2024-11-16 18:25:01 INFO: Started regeneration thread
+2024-11-16 18:25:01 INFO: Starting game server and accepting connections...
+2024-11-16 18:25:06 INFO: New connection from ('10.0.0.153', 54855)
+2024-11-16 18:25:06 DEBUG: Started client thread Thread-3 (handle_client) for ('10.0.0.153', 54855)
+2024-11-16 18:25:14 INFO: Data saved to game_data/characters.json.
+2024-11-16 18:25:14 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2024-11-16 18:25:14 INFO: Character 'Alistre' login processed successfully.
+2024-11-16 18:25:14 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:25:14 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:25:14 DEBUG: Added character 'Alistre' to active characters
+2024-11-16 18:25:14 DEBUG: Added player 'codybrown81' to players list.
+2024-11-16 18:25:14 INFO: Client for codybrown81 added to connected clients.
+2024-11-16 18:25:14 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:25:14 DEBUG: Player 'codybrown81' is already in room 3. Skipping add.
+2024-11-16 18:25:17 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:25:17 INFO: Combat initiated between Alistre and Devious Batling (2_1731810301_5072)
+2024-11-16 18:25:17 DEBUG: Damage calculation: base=4, strength_bonus=5, modifier=1.0, reduction=0, final=9
+2024-11-16 18:25:17 DEBUG: Player dealt 9 damage to Devious Batling. HP: 10->1 (Reduction: 0)
+2024-11-16 18:25:17 DEBUG: Mob dealt 1 damage to Alistre. HP: 50->49 (Reduction: 0)
+2024-11-16 18:25:19 ERROR: Attempted to get room with None vnum
+2024-11-16 18:25:19 DEBUG: Damage calculation: base=5, strength_bonus=5, modifier=1.0, reduction=0, final=10
+2024-11-16 18:25:19 DEBUG: Player dealt 10 damage to Devious Batling. HP: 1->0 (Reduction: 0)
+2024-11-16 18:25:19 DEBUG: Combat victory - mob_manager type: <class 'modules.server_handler.MobManager'>
+2024-11-16 18:25:19 DEBUG: Combat victory - mob_manager methods: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'get_mob_by_vnum', 'lock', 'mobs', 'mobs_file', 'room_manager', 'set_spawn_manager', 'spawn_manager', 'spawn_mob_in_room']
+2024-11-16 18:25:19 DEBUG: Combat victory - instance_id: 2_1731810301_5072
+2024-11-16 18:25:19 DEBUG: Combat victory - room_vnum: 3
+2024-11-16 18:25:19 ERROR: Error in handle_combat_victory: 'MobManager' object has no attribute 'handle_mob_death'
+2024-11-16 18:25:19 INFO: Combat ended for Alistre
+2024-11-16 18:25:21 DEBUG: Character 'Alistre' HP regenerated: 49 -> 50
+2024-11-16 18:25:21 INFO: Data saved to game_data/characters.json.
+2024-11-16 18:25:21 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2024-11-16 18:25:21 DEBUG: Updated stats for character 'Alistre'
+2024-11-16 18:36:37 DEBUG: Initializing game managers...
+2024-11-16 18:36:37 INFO: Rooms loaded successfully.
+2024-11-16 18:36:37 INFO: Marked mob 2 in room 3 as a template.
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/mobs.json.
+2024-11-16 18:36:37 DEBUG: MobManager initialized with mobs: ['Brittle Skeleton', 'Devious Batling', 'Level Up Mob']
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/items.json.
+2024-11-16 18:36:37 DEBUG: Loaded 3 items from game_data/items.json
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/weapons.json.
+2024-11-16 18:36:37 DEBUG: Loaded 1 items from game_data/weapons.json
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/armor.json.
+2024-11-16 18:36:37 DEBUG: Loaded 4 items from game_data/armor.json
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/consumables.json.
+2024-11-16 18:36:37 DEBUG: Loaded 5 items from game_data/consumables.json
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/containers.json.
+2024-11-16 18:36:37 DEBUG: Loaded 3 items from game_data/containers.json
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/currencies.json.
+2024-11-16 18:36:37 DEBUG: Loaded 1 items from game_data/currencies.json
+2024-11-16 18:36:37 DEBUG: Loaded data from game_data/corpses.json.
+2024-11-16 18:36:37 DEBUG: Loaded 1 items from game_data/corpses.json
+2024-11-16 18:36:37 DEBUG: ItemManager initialized with: 3 items, 1 weapons, 4 armors, 5 consumables, 3 containers, 1 currencies, 1 corpses.
+2024-11-16 18:36:37 INFO: Loaded initial mob state
+2024-11-16 18:36:37 DEBUG: SpawnManager connected to MobManager
+2024-11-16 18:36:37 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2024-11-16 18:36:37 INFO: Started mob spawn manager
+2024-11-16 18:36:37 CRITICAL: Failed to initialize managers: 'MobManager' object has no attribute 'load_initial_state'
+2025-06-11 18:37:24 DEBUG: Initializing game managers...
+2025-06-11 18:37:24 INFO: Rooms loaded successfully.
+2025-06-11 18:37:24 INFO: Marked mob 2 in room 3 as a template.
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/mobs.json.
+2025-06-11 18:37:24 DEBUG: MobManager initialized with mobs: ['Brittle Skeleton', 'Devious Batling', 'Level Up Mob']
+2025-06-11 18:37:24 INFO: Loaded initial mob state
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/items.json.
+2025-06-11 18:37:24 DEBUG: Loaded 3 items from game_data/items.json
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/weapons.json.
+2025-06-11 18:37:24 DEBUG: Loaded 1 items from game_data/weapons.json
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/armor.json.
+2025-06-11 18:37:24 DEBUG: Loaded 4 items from game_data/armor.json
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/consumables.json.
+2025-06-11 18:37:24 DEBUG: Loaded 5 items from game_data/consumables.json
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/containers.json.
+2025-06-11 18:37:24 DEBUG: Loaded 3 items from game_data/containers.json
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/currencies.json.
+2025-06-11 18:37:24 DEBUG: Loaded 1 items from game_data/currencies.json
+2025-06-11 18:37:24 DEBUG: Loaded data from game_data/corpses.json.
+2025-06-11 18:37:24 DEBUG: Loaded 1 items from game_data/corpses.json
+2025-06-11 18:37:24 DEBUG: ItemManager initialized with: 3 items, 1 weapons, 4 armors, 5 consumables, 3 containers, 1 currencies, 1 corpses.
+2025-06-11 18:37:24 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:37:24 INFO: Started mob spawn manager
+2025-06-11 18:37:24 INFO: All managers initialized successfully.
+2025-06-11 18:37:24 INFO: Rooms saved successfully.
+2025-06-11 18:37:24 INFO: Spawned mob 2 in room 3 with ID 2_1749692244_6024
+2025-06-11 18:37:24 DEBUG: Spawned mob 2 in room 3. Current count: 2
+2025-06-11 18:37:24 INFO: Server bound to 0.0.0.0:4000
+2025-06-11 18:37:24 DEBUG: No duplicate players found in any room.
+2025-06-11 18:37:24 DEBUG: Rooms initialization complete.
+2025-06-11 18:37:24 INFO: Cleaned all mob instances from rooms
+2025-06-11 18:37:24 INFO: Mob initialization handled by spawn manager
+2025-06-11 18:37:24 INFO: Game state initialized successfully
+2025-06-11 18:37:24 INFO: Started regeneration thread
+2025-06-11 18:37:24 INFO: Starting game server and accepting connections...
+2025-06-11 18:37:49 INFO: New connection from ('10.0.0.153', 60083)
+2025-06-11 18:37:49 DEBUG: Started client thread Thread-3 (handle_client) for ('10.0.0.153', 60083)
+2025-06-11 18:37:49 ERROR: Error receiving input: [WinError 10054] An existing connection was forcibly closed by the remote host
+2025-06-11 18:37:49 INFO: New connection from ('10.0.0.153', 60084)
+2025-06-11 18:37:49 DEBUG: Started client thread Thread-4 (handle_client) for ('10.0.0.153', 60084)
+2025-06-11 18:38:27 INFO: Data saved to game_data/accounts.json.
+2025-06-11 18:38:27 INFO: Account 'cody' created successfully.
+2025-06-11 18:38:57 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:38:57 INFO: Data saved to game_data/accounts.json.
+2025-06-11 18:38:57 INFO: Character 'Jenessa' created for user 'cody'.
+2025-06-11 18:38:57 ERROR: Error cleaning NO-RENT items for character Jenessa: unsupported operand type(s) for -: 'float' and 'NoneType'
+2025-06-11 18:38:57 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:38:57 DEBUG: Character 'Jenessa' updated for user 'cody'.
+2025-06-11 18:38:57 INFO: Character 'Jenessa' login processed successfully.
+2025-06-11 18:38:57 DEBUG: Added missing field 'class' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing field 'account_level' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing field 'base_stats' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'head' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'neck' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'chest' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'waist' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'legs' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'feet' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'hands' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'ring1' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'ring2' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'mainhand' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'offhand' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing subfield 'light_source' in 'equipment' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing field 'opponent' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing field 'skills' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing field 'cooldowns' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing field 'active_effects' with default value.
+2025-06-11 18:38:57 DEBUG: Added missing field 'gold' with default value.
+2025-06-11 18:38:57 DEBUG: Retrieved and normalized room 'Welcome Atrium' with vnum 1
+2025-06-11 18:38:57 DEBUG: Retrieved and normalized room 'Welcome Atrium' with vnum 1
+2025-06-11 18:38:57 DEBUG: Searching for item with vnum '1' in category 'items'.
+2025-06-11 18:38:57 DEBUG: Found item: 'Marble Fountain' in category 'items'
+2025-06-11 18:38:57 DEBUG: Searching for item with vnum '2' in category 'items'.
+2025-06-11 18:38:57 DEBUG: Found item: 'Welcome Sign' in category 'items'
+2025-06-11 18:38:57 DEBUG: Added character 'Jenessa' to active characters
+2025-06-11 18:38:57 DEBUG: Added player 'cody' to players list.
+2025-06-11 18:38:57 INFO: Client for cody added to connected clients.
+2025-06-11 18:38:57 DEBUG: Retrieved and normalized room 'Welcome Atrium' with vnum 1
+2025-06-11 18:38:57 INFO: Rooms saved successfully.
+2025-06-11 18:38:57 INFO: Added player 'Jenessa' (username: 'cody') to room 1.
+2025-06-11 18:39:49 DEBUG: Retrieved and normalized room 'Welcome Atrium' with vnum 1
+2025-06-11 18:40:27 DEBUG: Client disconnected during input.
+2025-06-11 18:40:27 DEBUG: Retrieved and normalized room 'Welcome Atrium' with vnum 1
+2025-06-11 18:40:27 INFO: Rooms saved successfully.
+2025-06-11 18:40:27 INFO: Removed player 'cody' from room 1.
+2025-06-11 18:40:27 DEBUG: Removed player 'cody' from room 1
+2025-06-11 18:40:27 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:40:27 DEBUG: Character 'Jenessa' updated for user 'cody'.
+2025-06-11 18:40:27 INFO: Character 'Jenessa' logout time recorded.
+2025-06-11 18:40:27 INFO: Client for cody removed from connected clients.
+2025-06-11 18:40:27 DEBUG: Removed character for username 'cody' from active characters
+2025-06-11 18:40:27 DEBUG: Removed player 'cody' from players list.
+2025-06-11 18:40:27 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:40:27 DEBUG: Character 'Jenessa' updated for user 'cody'.
+2025-06-11 18:40:27 INFO: Successfully cleaned up session for player 'cody'
+2025-06-11 18:40:27 DEBUG: Retrieved and normalized room 'Welcome Atrium' with vnum 1
+2025-06-11 18:40:27 INFO: Rooms saved successfully.
+2025-06-11 18:40:27 INFO: Removed player 'cody' from room 1.
+2025-06-11 18:40:27 DEBUG: Removed player 'cody' from room 1
+2025-06-11 18:40:27 WARNING: Player 'cody' not found in players list.
+2025-06-11 18:40:27 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:40:27 DEBUG: Character 'Jenessa' updated for user 'cody'.
+2025-06-11 18:40:27 INFO: Successfully cleaned up session for player 'cody'
+2025-06-11 18:40:38 INFO: New connection from ('10.0.0.153', 60110)
+2025-06-11 18:40:38 DEBUG: Started client thread Thread-5 (handle_client) for ('10.0.0.153', 60110)
+2025-06-11 18:40:38 DEBUG: Client disconnected during input.
+2025-06-11 18:40:38 INFO: New connection from ('10.0.0.153', 60111)
+2025-06-11 18:40:38 DEBUG: Started client thread Thread-6 (handle_client) for ('10.0.0.153', 60111)
+2025-06-11 18:40:49 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:40:49 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2025-06-11 18:40:49 INFO: Character 'Alistre' login processed successfully.
+2025-06-11 18:40:49 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:40:49 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:40:49 DEBUG: Added character 'Alistre' to active characters
+2025-06-11 18:40:49 DEBUG: Added player 'codybrown81' to players list.
+2025-06-11 18:40:49 INFO: Client for codybrown81 added to connected clients.
+2025-06-11 18:40:49 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:40:49 DEBUG: Player 'codybrown81' is already in room 3. Skipping add.
+2025-06-11 18:40:54 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:40:54 INFO: Combat initiated between Alistre and Devious Batling (2_1731810997_3290)
+2025-06-11 18:40:54 DEBUG: Damage calculation: base=4, strength_bonus=5, modifier=1.0, reduction=0, final=9
+2025-06-11 18:40:54 DEBUG: Player dealt 9 damage to Devious Batling. HP: 10->1 (Reduction: 0)
+2025-06-11 18:40:54 DEBUG: Mob dealt 1 damage to Alistre. HP: 50->49 (Reduction: 0)
+2025-06-11 18:40:56 ERROR: Attempted to get room with None vnum
+2025-06-11 18:40:56 DEBUG: Damage calculation: base=2, strength_bonus=5, modifier=1.0, reduction=0, final=7
+2025-06-11 18:40:56 DEBUG: Player dealt 7 damage to Devious Batling. HP: 1->0 (Reduction: 0)
+2025-06-11 18:40:56 DEBUG: Combat victory - mob_manager type: <class 'modules.server_handler.MobManager'>
+2025-06-11 18:40:56 DEBUG: Combat victory - mob_manager methods: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'get_mob_by_vnum', 'lock', 'mobs', 'mobs_file', 'room_manager', 'set_spawn_manager', 'spawn_manager', 'spawn_mob_in_room']
+2025-06-11 18:40:56 DEBUG: Combat victory - instance_id: 2_1731810997_3290
+2025-06-11 18:40:56 DEBUG: Combat victory - room_vnum: 3
+2025-06-11 18:40:56 ERROR: Error in handle_combat_victory: 'MobManager' object has no attribute 'handle_mob_death'
+2025-06-11 18:40:56 INFO: Combat ended for Alistre
+2025-06-11 18:41:04 DEBUG: Character 'Alistre' HP regenerated: 49 -> 50
+2025-06-11 18:41:04 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:41:04 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2025-06-11 18:41:04 DEBUG: Updated stats for character 'Alistre'
+2025-06-11 18:41:10 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:10 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:16 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:16 INFO: Combat initiated between Alistre and Devious Batling (2_1731810997_3290)
+2025-06-11 18:41:16 DEBUG: Damage calculation: base=4, strength_bonus=5, modifier=1.0, reduction=0, final=9
+2025-06-11 18:41:16 DEBUG: Player dealt 9 damage to Devious Batling. HP: 10->1 (Reduction: 0)
+2025-06-11 18:41:16 DEBUG: Mob dealt 1 damage to Alistre. HP: 50->49 (Reduction: 0)
+2025-06-11 18:41:18 ERROR: Attempted to get room with None vnum
+2025-06-11 18:41:18 DEBUG: Damage calculation: base=5, strength_bonus=5, modifier=1.0, reduction=0, final=10
+2025-06-11 18:41:18 DEBUG: Player dealt 10 damage to Devious Batling. HP: 1->0 (Reduction: 0)
+2025-06-11 18:41:18 DEBUG: Combat victory - mob_manager type: <class 'modules.server_handler.MobManager'>
+2025-06-11 18:41:18 DEBUG: Combat victory - mob_manager methods: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'get_mob_by_vnum', 'lock', 'mobs', 'mobs_file', 'room_manager', 'set_spawn_manager', 'spawn_manager', 'spawn_mob_in_room']
+2025-06-11 18:41:18 DEBUG: Combat victory - instance_id: 2_1731810997_3290
+2025-06-11 18:41:18 DEBUG: Combat victory - room_vnum: 3
+2025-06-11 18:41:18 ERROR: Error in handle_combat_victory: 'MobManager' object has no attribute 'handle_mob_death'
+2025-06-11 18:41:18 INFO: Combat ended for Alistre
+2025-06-11 18:41:24 DEBUG: Character 'Alistre' HP regenerated: 49 -> 50
+2025-06-11 18:41:24 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:41:24 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2025-06-11 18:41:24 DEBUG: Updated stats for character 'Alistre'
+2025-06-11 18:41:35 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:35 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:41 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:41 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:57 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:41:57 DEBUG: Searching for item with vnum '2' in category 'consumables'.
+2025-06-11 18:41:57 DEBUG: Found item: 'Fresh Bread' in category 'consumables'
+2025-06-11 18:43:09 DEBUG: Client disconnected during input.
+2025-06-11 18:43:09 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:43:09 INFO: Rooms saved successfully.
+2025-06-11 18:43:09 INFO: Removed player 'codybrown81' from room 3.
+2025-06-11 18:43:09 DEBUG: Removed player 'codybrown81' from room 3
+2025-06-11 18:43:09 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:43:09 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2025-06-11 18:43:09 INFO: Character 'Alistre' logout time recorded.
+2025-06-11 18:43:09 INFO: Client for codybrown81 removed from connected clients.
+2025-06-11 18:43:09 DEBUG: Removed character for username 'codybrown81' from active characters
+2025-06-11 18:43:09 DEBUG: Removed player 'codybrown81' from players list.
+2025-06-11 18:43:09 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:43:09 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2025-06-11 18:43:09 INFO: Successfully cleaned up session for player 'codybrown81'
+2025-06-11 18:43:09 DEBUG: Retrieved and normalized room 'Armory of Learning' with vnum 3
+2025-06-11 18:43:09 INFO: Rooms saved successfully.
+2025-06-11 18:43:09 INFO: Removed player 'codybrown81' from room 3.
+2025-06-11 18:43:09 DEBUG: Removed player 'codybrown81' from room 3
+2025-06-11 18:43:09 WARNING: Player 'codybrown81' not found in players list.
+2025-06-11 18:43:09 INFO: Data saved to game_data/characters.json.
+2025-06-11 18:43:09 DEBUG: Character 'Alistre' updated for user 'codybrown81'.
+2025-06-11 18:43:09 INFO: Successfully cleaned up session for player 'codybrown81'
+2025-06-11 22:36:35 DEBUG: Initializing game managers...
+2025-06-11 22:36:35 INFO: Rooms loaded successfully.
+2025-06-11 22:36:35 INFO: Marked mob 2 in room 3 as a template.
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/mobs.json.
+2025-06-11 22:36:35 DEBUG: MobManager initialized with mobs: ['Brittle Skeleton', 'Devious Batling', 'Level Up Mob']
+2025-06-11 22:36:35 INFO: Loaded initial mob state
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/items.json.
+2025-06-11 22:36:35 DEBUG: Loaded 3 items from game_data/items.json
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/weapons.json.
+2025-06-11 22:36:35 DEBUG: Loaded 1 items from game_data/weapons.json
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/armor.json.
+2025-06-11 22:36:35 DEBUG: Loaded 4 items from game_data/armor.json
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/consumables.json.
+2025-06-11 22:36:35 DEBUG: Loaded 5 items from game_data/consumables.json
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/containers.json.
+2025-06-11 22:36:35 DEBUG: Loaded 3 items from game_data/containers.json
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/currencies.json.
+2025-06-11 22:36:35 DEBUG: Loaded 1 items from game_data/currencies.json
+2025-06-11 22:36:35 DEBUG: Loaded data from game_data/corpses.json.
+2025-06-11 22:36:35 DEBUG: Loaded 1 items from game_data/corpses.json
+2025-06-11 22:36:35 DEBUG: ItemManager initialized with: 3 items, 1 weapons, 4 armors, 5 consumables, 3 containers, 1 currencies, 1 corpses.
+2025-06-11 22:36:35 INFO: Started mob spawn manager
+2025-06-11 22:36:35 INFO: All managers initialized successfully.
+2025-06-11 22:36:35 CRITICAL: Failed to bind server socket: [WinError 10048] Only one usage of each socket address (protocol/network address/port) is normally permitted
+2025-06-11 22:37:01 DEBUG: Initializing game managers...
+2025-06-11 22:37:01 INFO: Rooms loaded successfully.
+2025-06-11 22:37:01 INFO: Marked mob 2 in room 3 as a template.
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/mobs.json.
+2025-06-11 22:37:01 DEBUG: MobManager initialized with mobs: ['Brittle Skeleton', 'Devious Batling', 'Level Up Mob']
+2025-06-11 22:37:01 INFO: Loaded initial mob state
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/items.json.
+2025-06-11 22:37:01 DEBUG: Loaded 3 items from game_data/items.json
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/weapons.json.
+2025-06-11 22:37:01 DEBUG: Loaded 1 items from game_data/weapons.json
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/armor.json.
+2025-06-11 22:37:01 DEBUG: Loaded 4 items from game_data/armor.json
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/consumables.json.
+2025-06-11 22:37:01 DEBUG: Loaded 5 items from game_data/consumables.json
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/containers.json.
+2025-06-11 22:37:01 DEBUG: Loaded 3 items from game_data/containers.json
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/currencies.json.
+2025-06-11 22:37:01 DEBUG: Loaded 1 items from game_data/currencies.json
+2025-06-11 22:37:01 DEBUG: Loaded data from game_data/corpses.json.
+2025-06-11 22:37:01 DEBUG: Loaded 1 items from game_data/corpses.json
+2025-06-11 22:37:01 DEBUG: ItemManager initialized with: 3 items, 1 weapons, 4 armors, 5 consumables, 3 containers, 1 currencies, 1 corpses.
+2025-06-11 22:37:01 INFO: Started mob spawn manager
+2025-06-11 22:37:01 INFO: All managers initialized successfully.
+2025-06-11 22:37:01 CRITICAL: Failed to bind server socket: [WinError 10048] Only one usage of each socket address (protocol/network address/port) is normally permitted

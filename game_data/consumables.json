@@ -1,0 +1,62 @@
+[
+    {
+        "vnum": "1",
+        "name": "Small Health Potion",
+        "type": "consumables",
+        "consumable_type": "Potion",
+        "short_desc": "a small red healing potion",
+        "long_desc": "A small crystal vial containing a swirling red liquid that gives off a faint healing aura.",
+        "effect_type": "Heal",
+        "effect_value": 20,
+        "uses": 1,
+        "value": 100
+    },
+    {
+        "vnum": "2",
+        "name": "Fresh Bread",
+        "type": "consumables",
+        "consumable_type": "Food",
+        "short_desc": "a warm loaf of bread",
+        "long_desc": "A freshly baked loaf of bread that still smells wonderful.",
+        "effect_type": "Heal",
+        "effect_value": 10,
+        "uses": 1,
+        "value": 50
+    },
+    {
+        "vnum": "3",
+        "name": "Skill Point Potion",
+        "type": "consumables",
+        "consumable_type": "Potion",
+        "short_desc": "a blue skill point potion",
+        "long_desc": "A crystal vial containing a shimmering blue liquid that restores skill points.",
+        "effect_type": "Restore SP",
+        "effect_value": 15,
+        "uses": 1,
+        "value": 150
+    },
+    {
+        "vnum": "4",
+        "name": "Ability Point Potion",
+        "type": "consumables",
+        "consumable_type": "Potion",
+        "short_desc": "a purple ability point potion",
+        "long_desc": "A crystal vial containing a swirling purple liquid that restores ability points.",
+        "effect_type": "Restore AP",
+        "effect_value": 15,
+        "uses": 1,
+        "value": 150
+    },
+    {
+        "vnum": "5",
+        "name": "Water Flask",
+        "type": "consumables",
+        "consumable_type": "Drink",
+        "short_desc": "a flask of clean water",
+        "long_desc": "A leather flask containing clean, refreshing water.",
+        "effect_type": "None",
+        "effect_value": 0,
+        "uses": 3,
+        "value": 30
+    }
+]

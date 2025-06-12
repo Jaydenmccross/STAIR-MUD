@@ -1,0 +1,50 @@
+{
+    "wanderer": {
+        "skills": [
+            {
+                "name": "Quick Slash",
+                "description": "A swift attack dealing additional damage.",
+                "level_required": 2,
+                "cooldown": 5,
+                "sp_cost": 10,
+                "target_type": "single",
+                "effects": [
+                    {
+                        "type": "damage",
+                        "value": 10
+                    }
+                ]
+            },
+            {
+                "name": "Blade Flurry",
+                "description": "A flurry of blades that hits all enemies.",
+                "level_required": 4,
+                "cooldown": 8,
+                "sp_cost": 15,
+                "target_type": "area",
+                "effects": [
+                    {
+                        "type": "area_damage",
+                        "value": 8
+                    }
+                ]
+            },
+            {
+                "name": "Battle Stance",
+                "description": "Increase your strength temporarily.",
+                "level_required": 6,
+                "cooldown": 20,
+                "sp_cost": 25,
+                "target_type": "self",
+                "effects": [
+                    {
+                        "type": "buff",
+                        "stat": "Strength",
+                        "value": 5,
+                        "duration": 30
+                    }
+                ]
+            }
+        ]
+    }
+}
